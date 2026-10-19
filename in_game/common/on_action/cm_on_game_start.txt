@@ -1,5 +1,6 @@
 ﻿# Populate building-type and goods globals once per lobby.
-on_game_start_after_lobby = {
+# EU5 1.4: vanilla on_game_started_after_lobby replaces CMF's deprecated on_game_start_after_lobby.
+on_game_started_after_lobby = {
 	on_actions = {
 		cm_on_init_lobby_globals
 	}

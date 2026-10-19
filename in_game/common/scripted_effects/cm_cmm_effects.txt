@@ -570,12 +570,12 @@ cm_register_cmf_mod = {
 
 	cmm_register_slider_setting = {
 		mod_id = cm
-		setting_id = town_rights_min_gov_power
+		setting_id = town_rights_min_gov_power # EU5 1.4: now a political influence floor; id kept for save compatibility
 		tab_id = auto_town_rights
 		group_id = auto_town_rights
-		default_value = 90
+		default_value = 50
 		min_value = 0
-		max_value = 100
+		max_value = 100 # political influence is capped at 100
 		step_value = 5
 	}
 	cmm_sync_setting_alias = {
@@ -595,7 +595,7 @@ cm_register_cmf_mod = {
 	if = {
 		limit = {
 			has_variable = cmm_list_initialized_cm__auto_town_rights_list
-			var:cmm_setting_list_count_cm__auto_town_rights_list < 38
+			var:cmm_setting_list_count_cm__auto_town_rights_list < 43
 		}
 		remove_variable = cmm_list_initialized_cm__auto_town_rights_list
 		remove_from_variable_map = { name = cmm_list_count key = flag:cm__auto_town_rights_list }
@@ -605,7 +605,7 @@ cm_register_cmf_mod = {
 		mod_id = cm
 		setting_id = auto_town_rights_list
 		tab_id = auto_town_rights
-		item_count = 38
+		item_count = 43
 		is_ordered = 1
 	}
 
@@ -657,6 +657,12 @@ cm_register_cmf_mod = {
 	# Reform-gated
 	cmm_set_list_item_value = { mod_id = cm setting_id = auto_town_rights_list item = 37 value = town_rights_type:agrarian_community_town_right }
 	cmm_set_list_item_value = { mod_id = cm setting_id = auto_town_rights_list item = 38 value = town_rights_type:enlightened_leadership_reform_town_right }
+	# EU5 1.4 additions
+	cmm_set_list_item_value = { mod_id = cm setting_id = auto_town_rights_list item = 39 value = town_rights_type:royal_market_rights }
+	cmm_set_list_item_value = { mod_id = cm setting_id = auto_town_rights_list item = 40 value = town_rights_type:royal_staple_rights }
+	cmm_set_list_item_value = { mod_id = cm setting_id = auto_town_rights_list item = 41 value = town_rights_type:plantation_charter }
+	cmm_set_list_item_value = { mod_id = cm setting_id = auto_town_rights_list item = 42 value = town_rights_type:novo_brdo_charter }
+	cmm_set_list_item_value = { mod_id = cm setting_id = auto_town_rights_list item = 43 value = town_rights_type:ara_consulate_sea_town_rights }
 
 	cmm_register_list_bool_field = {
 		mod_id = cm

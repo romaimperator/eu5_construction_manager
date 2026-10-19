@@ -7,4 +7,5 @@ cm_town_rights_free = {
 	# -1 is a -100% cost modifier, removing the cost entirely.
 	grant_town_rights_cost_modifier = -1
 	revoke_town_rights_cost_modifier = -1
+	upgrade_town_rights_cost_modifier = -1
 }

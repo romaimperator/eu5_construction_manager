@@ -3,7 +3,7 @@
 		visible = "[FoodProductionListItem.IsProvinceItem]"
 		layoutpolicy_horizontal = expanding
 		size = { 100% 51 }
-
+								
 		vbox = {
 			datacontext = "[FoodProductionListItem.AccessProvinceItem]"
 			ignoreinvisible = yes
@@ -19,9 +19,9 @@
 					using = bg_paper_card
 					using = bg_card_header_01_production
 					blockoverride "header_pattern_texture_density" {texture_density = 1.4}
-
+	
 					card_header_button_04 = {
-
+												
 						size = { 100% 100% }
 						action_tooltip = {
 							click_type = left
@@ -39,45 +39,29 @@
 
 						tooltipwidget = { BasicFunctionalTooltip = {} }
 					}
-
+			
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						ignoreinvisible = yes
 						spacing = 5
 						margin = { 10 0 }
-
+	
 						widget = {
 							using = layoutpolicy_expanding
 							hbox = {
 								spacing = 5
-								widget = {
-									size = { 40 40 }
-									using = bg_circle_outline
-									blockoverride "frame_size" {
-										texture = "gfx/interface/component_tiles/hud_corners/circle_frame_alt_thin.dds"
-										texture_density = 2
-										margin = {1 1}
-									}
-									blockoverride "inside_color" {
-										modify_texture = {
-											using = color_dark_brown_texture
-											blend_mode = multiply
-										}
-									}
-									icon = {
-										parentanchor = center
-										size = {30 30}
-										using = province_texture
-
-										glow = {
-											name = "drop_shadow"
-											glow_radius = 3
-											color = {0.0 0.0 0.0 1.0}
-											alpha = 0.6
-										}
+								icon = {
+									size = {30 30}
+									using = province_texture
+									
+									glow = {
+										name = "drop_shadow"
+										glow_radius = 3
+										color = {0.0 0.0 0.0 1.0}
+										alpha = 0.6
 									}
 								}
-
+	
 								vbox = {
 									layoutpolicy_horizontal = expanding
 									hbox = {
@@ -87,7 +71,7 @@
 											autoresize = yes
 											align = left|nobaseline
 											text = "[FoodProvinceItem.GetProvince.GetName]"
-
+																	
 											sort_by_left_fade_highlight = {
 												position = { -5 0 }
 												name = "name"
@@ -95,7 +79,7 @@
 										}
 										expand = {}
 									}
-
+	
 									hbox = {
 										layoutpolicy_horizontal = expanding
 										text_single = {
@@ -108,15 +92,15 @@
 										expand = {}
 									}
 								}
-
+														
 								expand = {}
 							}
 						}
-
+	
 						widget = {
 							layoutpolicy_vertical = expanding
 							size = { 80 -1 }
-
+	
 							text_single = {
 								maximumsize = {80 -1}
 								parentanchor = right|vcenter
@@ -126,14 +110,14 @@
 								tooltipwidget = {
 									using = province_food_production
 								}
-
+	
 								sort_by_small_highlight = {
 									size = { 70 100% }
 									name = "food_balance"
 								}
 							}
 						}
-
+												
 						widget = {
 							layoutpolicy_vertical = expanding
 							size = { 110 -1 }
@@ -151,7 +135,7 @@
 									text = "game_concept_food_stockpile"
 									default_format = "#explanation_link"
 								}
-
+	
 								text_single = { ### STOCKPILE BALANCE
 									layoutpolicy_horizontal = expanding
 									raw_text = "[Add_float(FixedPointToFloat(Province.GetFoodFromMarket), FixedPointToFloat(Province.GetMonthlyFood))|+=2]"
@@ -159,7 +143,7 @@
 									fontsize = 13
 									minimumsize = { -1 20 }
 									maximumsize = { 120 -1 }
-
+	
 									sort_by_small_highlight = {
 										name = "food_stockpile_balance"
 										position = { 7 0 }
@@ -168,7 +152,7 @@
 								expand = {}
 							}
 						}
-
+	
 						hbox = {
 							spacing = 5
 							piechart = {
@@ -180,56 +164,56 @@
 								tooltipwidget = {
 									using = province_food_tooltip
 								}
-
+									
 								pieslice_no_highlight = {
 									texture = "gfx/interface/pie_charts/pie_chart_alpha_80_green.dds"
 									value = "[FixedPointToFloat(Province.GetFoodCapacityPercent)]"
 									color = { 1 1 1 1 }
 								}
-
+									
 								pieslice_no_highlight = {
 									texture = "gfx/interface/pie_charts/pie_chart_alpha_80_red.dds"
 									value = "[Subtract_float('(float)100.0', FixedPointToFloat(Province.GetFoodCapacityPercent))]"
 									color = { 1 1 1 1 }
 								}
-
+									
 								icon = {
 									size = { 61% 61% }
 									parentanchor = center
 									texture = "gfx/interface/icons/location_icons/food.dds"
-
+	
 									modify_texture = {
-										visible = "[Province.IsRiskOfStarving]"
+										visible = "[Province.IsRiskOfStarving]"	
 										using = color_black_texture
 										alpha = 0.5
 										blend_mode = multiply
 									}
-
+							
 									modify_texture = {
-										visible = "[Province.IsRiskOfStarving]"
+										visible = "[Province.IsRiskOfStarving]"	
 										using = color_yellow_texture
 										alpha = 0.6
 									}
-
+							
 									modify_texture = {
 										visible = "[Province.IsStarving]"															using = color_black_texture
 										alpha = 0.5
 										blend_mode = multiply
 									}
-
+							
 									modify_texture = {
 										visible = "[Province.IsStarving]"															using = color_black_texture
 										using = color_mid_red_texture
 									}
 								}
-
-
+														
+	
 								sort_by_small_highlight = {
 									size = { 120% 120% }
 									name = "food_stockpile_percent"
 								}
 							}
-
+	
 							icon = {
 								size = { 18 18 }
 								visible = "[Not(FoodProvinceItem.IsExpanded)]"
@@ -242,7 +226,7 @@
 									alpha = 0.3
 								}
 							}
-
+							
 							icon = {
 								size = { 18 18 }
 								visible = "[FoodProvinceItem.IsExpanded]"
@@ -261,6 +245,8 @@
 			}
 		}
 	}
+
+
 	type food_production_location = widget {
 		visible = "[FoodProductionListItem.IsLocationItem]"
 		size = { 100% 51 }
@@ -268,7 +254,7 @@
 			datacontext = "[FoodProductionListItem.AccessLocationItem]"
 			parentanchor = center
 			size = { 100% 46 }
-
+	
 			datacontext = "[FoodLocationItem.GetLocation]"
 
 			action_tooltip = {
@@ -281,7 +267,7 @@
 			action_tooltip = {
 				click_type = right
 				click_mode = single
-
+	
 				cursor = "location_menu"
 				title = "CLICK_ACTION_LOCATION_CONTEXT_MENU"
 				on_action = "[PdxGuiWidget.ToggleContextMenu]"
@@ -297,63 +283,9 @@
 				margin = { 10 0 }
 				spacing = 5
 				ignoreinvisible = yes
-				widget = { # GlorpUI: Replace Location Icon w/ Clickable Upgrade Button
+				icon = {
 					size = { 22 22 }
-
-					button = {
-						size = { 100% 100% }
-						position = {0 0}
-
-						action_tooltip = {
-							click_type = left
-							click_mode = confirm
-							enabled = "[Location.CanUpgradeRank]"
-							title = "[Location.GetUpgradeRankName]"
-							cost = "[Location.GetUpgradeRankPrice]"
-							description = "[Location.GetUpgradeRankDescription]"
-							effects = "[Location.GetUpgradeRankEffects]"
-							conditions = "[Location.GetUpgradeRankConditions]"
-							on_action = "[UpgradeLocationRank(Location.Self)]"
-						}
-
-						action_tooltip = {
-							click_type = right
-							click_mode = confirm
-							enabled = "[Location.CanDowngradeRank]"
-							title = "location_downgrade"
-							cost = "[Location.GetDowngradeRankPrice]"
-							description = "[Location.GetDowngradeRankDescription]"
-							effects = "[Location.GetDowngradeRankEffects]"
-							conditions = "[Location.GetDowngradeRankConditions]"
-							on_action = "[DowngradeLocationRank(Location.Self)]"
-						}
-
-						enabled = "[Or(Location.CanUpgradeRank, Location.CanDowngradeRank)]"
-
-						tooltipwidget = {
-							using = location_rank_tooltip
-							blockoverride "location_rank_tooltip_button" {
-								TooltipBlockList = {
-									visible = "[Not(StringIsEmpty(Location.GetUpgradeRankPriceBreakdown))]"
-									textcontext = "[Location.GetUpgradeRankPriceBreakdown]"
-								}
-							}
-						}
-
-						icon = {
-							size = { 100% 100% }
-							parentanchor = center
-							position = {0 0}
-							texture = "[Location.GetRankIcon]"
-
-							glow = {
-								visible = "[Location.CanUpgradeRank]"
-								glow_radius = 3
-								color = {0.3 1.0 0.3 1.0}
-								alpha = 0.6
-							}
-						}
-					}
+					texture = "[Location.GetRankIcon]"
 				}
 
 				widget = {
@@ -365,7 +297,7 @@
 						align = left|nobaseline
 						text = "[FoodLocationItem.GetLocation.GetNameWithNoTooltip]"
 						default_format = "#L"
-
+								
 					}
 				}
 
@@ -385,7 +317,7 @@
 							size = { 95% 100% }
 							autoresize = no
 							align = center
-							text = "[FoodLocationItem.GetLocation.GetFoodsOutputModifiers|+=%]"
+							text = "[FoodLocationItem.GetLocation.GetFoodsOutputModifiers|+=%]"	
 						}
 						using = bg_number_container_bckg
 						blockoverride "number_container_extra" {
@@ -396,7 +328,7 @@
 						sort_by_small_highlight = {
 							name = "food"
 							size = { 75% 70% }
-						}
+						}								
 					}
 
 					widget = {
@@ -409,7 +341,7 @@
 							align = center
 							raw_text = "[FoodLocationItem.GetLocation.GetFoodsOutputWithLabel]@food!"
 
-
+									
 						}
 						using = bg_number_container_bckg
 						blockoverride "number_container_extra" {
@@ -421,7 +353,7 @@
 
 				button_regular_icon = {
 					onclick = "[OpenLateralViewWithFilter('production', 'food_production')]"
-					onclick = "[ShowLocationProductionView(FoodLocationItem.GetLocation.GetId, '(bool)no')]"
+                    onclick = "[ShowLocationProductionView(FoodLocationItem.GetLocation.GetId, '(bool)no')]"
 					enabled = "[FoodLocationItem.CanProduceFoodBuildings]"
 					size = {40 25 }
 
@@ -431,7 +363,7 @@
 						size = {15 15}
 					}
 					datacontext = "[FoodLocationItem.GetLocation]"
-
+							
 					action_tooltip = {
 						click_modifier = default
 						enabled = "[FoodLocationItem.CanProduceFoodBuildings]"
@@ -439,7 +371,7 @@
 						click_type = left
 						title = "BUILD_FOOD_BUILDINGS_LOCATION"
 						on_action = "[OpenLateralViewWithFilter('production', 'food_production')]"
-						on_action = "[ShowLocationProductionView(FoodLocationItem.GetLocation.GetId, '(bool)no')]"
+                        on_action = "[ShowLocationProductionView(FoodLocationItem.GetLocation.GetId, '(bool)no')]"
 					}
 
 					action_tooltip = {
@@ -457,7 +389,7 @@
 					}
 				}
 
-				# GlorpUI: Construction Manager auto-food widget, food RGO locations only
+				# CM: auto-food widget, food RGO locations only
 				cm_auto_food_widget_food_production_lateralview = {}
 
 				widget = {
@@ -472,7 +404,7 @@
 								blockoverride "title_icon_texture" {
 									texture = "gfx/interface/icons/trade_goods/icon_goods_steel.dds"
 								}
-
+										
 								blockoverride "concept_link" {
 									text = [food_raw_material|E]
 								}
@@ -550,9 +482,9 @@
 							fontsize = 13
 							raw_text = "[Location.GetMaxRGOWorkers|0] [Location.GetMaxRGOWorkersUnderConstruction|+=] / [Location.GetMaximumMaxRGOWorkersValueForUI|0]"
 						}
+								
 
-
-
+								
 						datacontext = "[Location]"
 						tooltipwidget = {
 							using = location_rgo_button_tooltip
@@ -589,7 +521,7 @@
 						using = piechart_angles
 						using = bg_circle_piechart
 						parentanchor = left|vcenter
-
+				
 						pieslice_no_highlight = {
 							filter_mouse = none
 							alwaystransparent = yes
@@ -597,7 +529,7 @@
 							value = "[Divide_CFixedPoint(Location.GetEffectiveRGOWorkers, Location.GetMaxRGOWorkers)]"
 							color = { 1 1 1 1 }
 						}
-
+				
 						pieslice_no_highlight = {
 							filter_mouse = none
 							alwaystransparent = yes

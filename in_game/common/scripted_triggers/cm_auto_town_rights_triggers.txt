@@ -5,8 +5,39 @@
 # via modifier:can_grant_town_rights = yes.
 # Rights with no tech and no potential default to yes.
 cm_auto_town_rights_potential_passes = {
-	# Tech-unlocked rights: the advance must be researched.
+	# Generated from vanilla EU5 1.4: unlocking advances (unlock_town_rights) plus each right's `potential` block.
 	trigger_if = {
+		limit = { scope:cm_town_right = town_rights_type:royal_free_cities_town_rights }
+		tag = HUN
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:bohemian_royal_cities_town_rights }
+		culture = {
+			has_culture_group = culture_group:bohemian_group
+		}
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:swedish_city_rights }
+		has_or_had_tag = SWE
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:norwegian_city_rights }
+		has_or_had_tag = NOR
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:ville_franche_town_rights }
+		culture = {
+			has_culture_group = culture_group:french_group
+		}
+		modifier:allow_ville_franche_town_rights = yes
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:borgo_franco_town_rights }
+		culture = {
+			has_culture_group = culture_group:italian_group
+		}
+	}
+	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:scandinavian_fishing_privileges }
 		has_advance = scandinavian_fishing_privileges_advance
 	}
@@ -18,44 +49,24 @@ cm_auto_town_rights_potential_passes = {
 		limit = { scope:cm_town_right = town_rights_type:scandinavian_thing_rights }
 		has_advance = scandinavian_thing_rights_advance
 	}
-	# Rights gated by a potential block.
-	trigger_else_if = {
-		limit = { scope:cm_town_right = town_rights_type:royal_free_cities_town_rights }
-		tag = HUN
-	}
-	trigger_else_if = {
-		limit = { scope:cm_town_right = town_rights_type:bohemian_royal_cities_town_rights }
-		culture = { has_culture_group = culture_group:bohemian_group }
-	}
-	trigger_else_if = {
-		limit = { scope:cm_town_right = town_rights_type:swedish_city_rights }
-		tag = SWE
-	}
-	trigger_else_if = {
-		limit = { scope:cm_town_right = town_rights_type:norwegian_city_rights }
-		tag = NOR
-	}
-	trigger_else_if = {
-		limit = { scope:cm_town_right = town_rights_type:ville_franche_town_rights }
-		culture = { has_culture_group = culture_group:french_group }
-		modifier:allow_ville_franche_town_rights = yes
-	}
-	trigger_else_if = {
-		limit = { scope:cm_town_right = town_rights_type:borgo_franco_town_rights }
-		culture = { has_culture_group = culture_group:italian_group }
-	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:magdeburg_rights_town_rights }
-		capital ?= { region = region:north_german_region }
+		capital ?= {
+			region = region:north_german_region
+		}
 		modifier:allow_magdeburg_rights_town_rights = yes
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:lubeck_town_rights }
-		culture = { has_culture_group = culture_group:german_group }
+		culture = {
+			has_culture_group = culture_group:german_group
+		}
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:nuremberg_rights_town_rights }
-		capital ?= { region = region:south_german_region }
+		capital ?= {
+			region = region:south_german_region
+		}
 		modifier:allow_nuremberg_rights_town_rights = yes
 	}
 	trigger_else_if = {
@@ -85,11 +96,15 @@ cm_auto_town_rights_potential_passes = {
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:borough_customals }
-		culture = { has_culture_group = culture_group:british_group }
+		culture = {
+			has_culture_group = culture_group:british_group
+		}
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:manorial_customals }
-		culture = { has_culture_group = culture_group:british_group }
+		culture = {
+			has_culture_group = culture_group:british_group
+		}
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:foros_extensos_town_rights }
@@ -115,7 +130,9 @@ cm_auto_town_rights_potential_passes = {
 			has_or_had_tag = NAV
 			culture = culture:basque
 		}
-		culture = { has_culture_group = culture_group:iberian_group }
+		culture = {
+			has_culture_group = culture_group:iberian_group
+		}
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:fuero_de_aragon_town_rights }
@@ -128,6 +145,7 @@ cm_auto_town_rights_potential_passes = {
 		limit = { scope:cm_town_right = town_rights_type:usatges_de_barcelona_town_rights }
 		OR = {
 			has_or_had_tag = ARA
+			has_or_had_tag = CAT
 			culture = culture:catalan
 		}
 	}
@@ -135,6 +153,7 @@ cm_auto_town_rights_potential_passes = {
 		limit = { scope:cm_town_right = town_rights_type:furs_de_valencia_town_rights }
 		OR = {
 			has_or_had_tag = ARA
+			has_or_had_tag = CAT
 			culture = culture:catalan
 		}
 	}
@@ -171,6 +190,22 @@ cm_auto_town_rights_potential_passes = {
 		limit = { scope:cm_town_right = town_rights_type:enlightened_leadership_reform_town_right }
 		has_reform = government_reform:enlightened_leadership_reform
 	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:royal_market_rights }
+		has_advance = town_rights_enable
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:royal_staple_rights }
+		has_advance = town_rights_enable
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:novo_brdo_charter }
+		has_policy = novo_brdo_mining_law
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:ara_consulate_sea_town_rights }
+		modifier:unlocked_consulate_sea_town_right = yes
+	}
 	trigger_else = {
 		always = yes
 	}
@@ -187,6 +222,6 @@ cm_town_rights_grants_are_free = {
 cm_town_rights_grant_affordable = {
 	OR = {
 		cm_town_rights_grants_are_free = yes
-		government_power >= cm_town_rights_grant_min_required
+		political_influence >= cm_town_rights_grant_min_required # EU5 1.4: urban rights cost political influence
 	}
 }

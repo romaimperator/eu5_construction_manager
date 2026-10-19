@@ -377,3 +377,53 @@ texticon = {
 		fontsize = 16
 	}
 }
+
+texticon = {
+	icon = royal_market_rights
+	iconsize = {
+		texture = "gfx/interface/icons/town_rights/_default.dds"
+		size = { 20 20 }
+		offset = { 0 2 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = royal_staple_rights
+	iconsize = {
+		texture = "gfx/interface/icons/town_rights/_default.dds"
+		size = { 20 20 }
+		offset = { 0 2 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = plantation_charter
+	iconsize = {
+		texture = "gfx/interface/icons/town_rights/_default.dds"
+		size = { 20 20 }
+		offset = { 0 2 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = novo_brdo_charter
+	iconsize = {
+		texture = "gfx/interface/icons/town_rights/_default.dds"
+		size = { 20 20 }
+		offset = { 0 2 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = ara_consulate_sea_town_rights
+	iconsize = {
+		texture = "gfx/interface/icons/town_rights/ara_consulate_sea_town_rights.dds"
+		size = { 20 20 }
+		offset = { 0 2 }
+		fontsize = 16
+	}
+}

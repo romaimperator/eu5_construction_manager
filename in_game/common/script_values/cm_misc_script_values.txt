@@ -9,7 +9,7 @@ cm_get_allowed_building_overbuild_levels = {
 
 # Root is the country
 cm_grant_town_rights_cost = {
-	value = 5 # Mirrors vanilla grant_town_rights price: in_game/common/prices/00_hardcoded.txt:61
+	value = 20 # Mirrors vanilla grant_town_rights price (political influence, EU5 1.4): in_game/common/prices/00_hardcoded.txt:61
 	multiply = {
 		value = 1
 		add = modifier:grant_town_rights_cost_modifier
@@ -17,7 +17,7 @@ cm_grant_town_rights_cost = {
 	}
 }
 
-# Minimum government power needed to grant without dropping below the floor. Root is the country.
+# Minimum political influence needed to grant without dropping below the floor. Root is the country.
 cm_town_rights_grant_min_required = {
 	if = { limit = { exists = var:cm_town_rights_min_gov_power }
 		value = var:cm_town_rights_min_gov_power
