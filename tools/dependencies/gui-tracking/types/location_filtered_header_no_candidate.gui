@@ -13,7 +13,7 @@
 
 		widget = {
 			layoutpolicy_horizontal = expanding
-			size = { -1 55 }
+			size = { -1 60 }
 			block "location_context"
 			{
 				datacontext = "[ProductionView.GetSelectedLocation]"
@@ -25,7 +25,7 @@
 				margin = {2 1}
 
 				widget = {
-					size = { -1 49 }
+					size = { -1 54 }
 					layoutpolicy_horizontal = expanding
 
 					using = bg_building_card_colors
@@ -53,6 +53,25 @@
 
 						datacontext = "[BuildingItem.GetBuildingType]"
 
+						action_tooltip = {
+							click_type = left
+							click_mode = single
+							click_modifier = ctrl
+							title = "BUILDING_IN_LOCATION_ACTION_CTRL"
+							description = "[CanBuildOrExpandBuildingInfo(BuildingItem.GetBuildingType, Location.Self)]"
+							enabled = "[CanBuildOrExpandBuilding(BuildingItem.GetBuildingType, Location.Self)]"
+							on_action = "[BuildOrExpandBuildingCtrl(BuildingItem.GetBuildingType, Location.Self)]"
+						}
+						action_tooltip = {
+							click_type = left
+							click_mode = single
+							click_modifier = shift
+							title = "BUILDING_IN_LOCATION_ACTION_SHIFT"
+							description = "[CanBuildOrExpandBuildingInfo(BuildingItem.GetBuildingType, Location.Self)]"
+							enabled = "[CanBuildOrExpandBuilding(BuildingItem.GetBuildingType, Location.Self)]"
+							on_action = "[BuildOrExpandBuildingShift(BuildingItem.GetBuildingType, Location.Self)]"
+						}
+
 						tooltipwidget = {
 							using = BuildingType_tooltip
 							blockoverride "production_method_simple_good_tooltip" { 
@@ -67,28 +86,16 @@
 						hbox = {
 							layoutpolicy_horizontal = expanding
 							layoutpolicy_vertical = expanding
-							spacing = 5
-							margin_right = 10
+							spacing = 6
+							margin_right = 8
 
 							# icon
-							vbox = {
-								layoutpolicy_horizontal = expanding
-								layoutpolicy_vertical = expanding
-								ignoreinvisible = yes
-								margin = {5 0}
-								maximumsize = { 50 -1 }
-
-								# using = bg_cabinet_card_frame
-								blockoverride "market_card_extra" {
-									visible	= no
-								}
-								blockoverride "market_card_frame_extra" {
-									mirror = horizontal
-									margin = {-3 -3}
-								}
+							widget = {
+								size = { 55 30 }
 
 								icon = {
 									size = { 29 29 }
+									parentanchor = center
 									texture = "[GetBuildingIcon(BuildingItem.GetBuildingType.Self)]"
 
 									sort_by_highlight = {
@@ -99,7 +106,7 @@
 
 							text_single = {
 								autoresize = no
-								size = { 160 15 }
+								size = { 140 15 }
 								align = left|nobaseline
 								default_format = "#yellow_titles"
 								text = "[BuildingItem.GetBuildingType.GetNameWithNoTooltip]"
@@ -108,27 +115,46 @@
 
 							expand = {}
 
-							# text_single = {
-							# 	autoresize = no
-							# 	size = {80 25}
-							# 	datacontext = "[BuildingItem.GetBuildingType]"
-							# 	visible = "[BuildingItem.GetBuildingType.IsProducing]"
-							# 	fontsize = 14
-							# 	align = center|nobaseline
-							# 	raw_text = "[GetBuildingTypeTaxBaseInLocation(BuildingItem.GetBuildingType, Location.Self)|+=2]@tax_base!"
-							# 	tooltipwidget = {
-							# 		using = BuildingTypeProfit_Tooltip
-							# 	}
-							# 	sort_by_highlight = {
-							# 		size = { 100% 110% }
-							# 		name = "profit"
-							# 	}
-							# }
-
 							hbox = {
 								margin_right = 3
-								spacing = 5
-								layoutpolicy_horizontal = expanding
+								spacing = 6
+
+								widget = {
+									size = { 24 24 }
+								}
+
+								widget = { #efficiency
+									datacontext = "[BuildingItem.GetBuildingType]"
+									datacontext = "[Location]"
+									size = { 70 44 }
+									vbox = { #unbuilt
+										visible = "[BuildingItem.GetBuildingType.IsProducing]"
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+										text_single = {
+											size = { 70 18 }
+											autoresize = no
+											align = nobaseline|right
+											default_format = "@bold!"
+											fontsize = 14
+											text = "BUILDING_TYPE_POSSIBLE_PROD_EFFICIENCY"
+											tooltipwidget = {
+												SimpleContextualStringPairTooltipType = {
+													blockoverride "title_icon" {
+														icon = {
+															using = tooltip_title_icon_size
+															texture = "gfx/interface/icons/flat_icons/building_panel/production_efficiency.dds"
+														}
+													}
+													blockoverride "concept_link" {
+														text = "[production_efficiency|e]"
+													}
+													lowpriotextcontext = "[BuildingItem.GetBuildingType.ProductionEfficiencyInfo(Location.GetOwnerPtr, Location.Self)]"
+												}
+											}
+										}
+									}
+								}
 
 								widget = { #profit / income
 									size = { 60 36 }
@@ -180,40 +206,10 @@
 										}
 									}
 								}
-
-								widget = { #efficiency
-									datacontext = "[BuildingItem.GetBuildingType]"	
-									datacontext = "[Location]"	
-									size = { 70 36 }
-									hbox = { #unbuilt
-										visible = "[BuildingItem.GetBuildingType.IsProducing]"
-										expand = {}
-										text_single = {
-											maximumsize = { 70 18 }
-											default_format = "@bold!"
-											fontsize = 14
-											text = "BUILDING_TYPE_POSSIBLE_PROD_EFFICIENCY"
-											tooltipwidget = {
-												SimpleContextualStringPairTooltipType = {
-													blockoverride "title_icon" {
-														icon = {
-															using = tooltip_title_icon_size
-															texture = "gfx/interface/icons/flat_icons/building_panel/production_efficiency.dds"
-														}
-													}
-													blockoverride "concept_link" {
-														text = "[production_efficiency|e]"
-													}
-													lowpriotextcontext = "[BuildingItem.GetBuildingType.ProductionEfficiencyInfo(Location.GetOwnerPtr, Location.Self)]"
-												}
-											}
-										}
-									}
-								}
 							}
 
 							widget = {
-								size = { 140 25 }
+								size = { 110 25 }
 
 								hbox = {
 									layoutpolicy_horizontal = expanding
@@ -241,8 +237,6 @@
 									}
 								}
 							}
-
-
 						}
 					}
 				}

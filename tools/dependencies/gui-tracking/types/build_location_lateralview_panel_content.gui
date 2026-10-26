@@ -58,12 +58,12 @@
 												}
 											}
 											tooltipwidget = { BasicFunctionalTooltip = {} }
-											
+
 											blockoverride "glow_visible" {
 												visible = "[BuildInLocationLateralView.IsBuildLocationSelectMarketOpened(PdxGuiWidget.FindParent('build_location_filtered_list').Self)]"
 											}
 										}
-	
+
 										button = {
 											using = market_filter_button
 											enabled = "[BuildInLocationLateralView.IsMarketFilterEnabled]"
@@ -291,11 +291,17 @@
 										margin = { 5 0 }
 										margin_left = 10
 
-										icon = { 
+										icon = {
 											size = { 25 25 }
+											visible = "[Not(BuildInLocationLateralView.HasUpgradableFromCurrentTier)]"
 											texture = "gfx/interface/icons/flat_icons/mass_construct.dds"
 										}
-						
+										icon = {
+											size = { 25 25 }
+											visible = "[BuildInLocationLateralView.HasUpgradableFromCurrentTier]"
+											texture = "gfx/interface/icons/_default.dds"
+										}
+
 										text_single = {
 											fontsize = 13
 											layoutpolicy_horizontal = expanding
@@ -343,9 +349,33 @@
 									enabled = "[LocationToBuildItem.CanCreateBuilding]"
 								}
 
+								action_tooltip = {
+									click_type = left
+									click_mode = single
+									click_modifier = alt
+
+									title = "UPGRADE_OBSOLETE_FROM_CURRENT_ACTION"
+									description = "UPGRADE_OBSOLETE_FROM_CURRENT_ACTION_DESC"
+									enabled = "[BuildInLocationLateralView.HasUpgradableFromCurrentTier]"
+									on_action = "[BuildInLocationLateralView.UpgradeObsoleteFromCurrentTier]"
+									on_action = "[PlayAudioEffect('UI_action_building_build')]"
+								}
+
 								tooltipwidget = {
 									using = construct_building_ranking_tt
-									# blockoverride "extra_build_content" {}
+									blockoverride "extra_build_content" {
+										TooltipTextBlock = {
+											visible = "[GreaterThan_int32(BuildInLocationLateralView.GetTotalRemainingUpgradeLevels, '(int32)0')]"
+											blockoverride "text" {
+												text = "BUILDING_MASS_UPGRADE_REMAINING_BL"
+											}
+											blockoverride "textblock_background_tint" {
+												modify_texture = {
+													using = color_turquoise_texture
+												}
+											}
+										}
+									}
 								}
 							}
 
@@ -1039,19 +1069,45 @@
 					sort_by_key_button = {
 						name = "name"
 						layoutpolicy_vertical = expanding
-						size = { 65 -1 }
+						size = { 55 -1 }
 					}
-	
+
+					sort_by_key_button = {
+						name = "goods"
+						layoutpolicy_vertical = expanding
+						size = { 55 -1 }
+					}
+
 					sort_by_key_button = {
 						name = "employment"
 						layoutpolicy_vertical = expanding
-						size = { 88 -1 }
+						size = { 55 -1 }
 					}
 					sort_by_key_button = {
 						name = "population"
 						layoutpolicy_vertical = expanding
-						size = { 88 -1 }
+						size = { 55 -1 }
 					}
+
+					sort_by_key_button = {
+						name = "production_efficiency"
+						layoutpolicy_vertical = expanding
+						size = { 100 -1 }
+						visible = "[BuildInLocationLateralView.GetBuildingType.IsProducing]"
+						blockoverride "sort_by_key_button_texture" {
+							texture = "gfx/interface/icons/sort/efficiency.dds"
+						}
+					}
+
+					# sort_by_key_button = {
+					# 	name = "establishment"
+					# 	layoutpolicy_vertical = expanding
+					# 	size = { 40 -1 }
+					# 	visible = "[And(BuildInLocationLateralView.GetBuildingType.IsEstablishmentSystemEnabled, BuildInLocationLateralView.GetBuildingType.IsProducing)]"
+					# 	blockoverride "sort_by_key_button_texture" {
+					# 		texture = "gfx/interface/icons/flat_icons/building_panel/establishment.dds"
+					# 	}
+					# }
 
 					sort_by_key_button = {
 						name = "profit"
@@ -1068,29 +1124,25 @@
 					}
 
 					sort_by_key_button = {
-						name = "production_efficiency"
+						name = "control_income"
 						layoutpolicy_vertical = expanding
-						size = { 40 -1 }
-						visible = "[BuildInLocationLateralView.GetBuildingType.IsProducing]"
-						blockoverride "sort_by_key_button_texture" {
-							texture = "gfx/interface/icons/sort/efficiency.dds"
-						}
+						size = { 88 -1 }
+						visible = "[BuildInLocationLateralView.GetBuildingType.GrantsControl]"
 					}
 
 					sort_by_key_button = {
-						name = "establishment"
+						name = "current_control"
 						layoutpolicy_vertical = expanding
-						size = { 40 -1 }
-						visible = "[And(BuildInLocationLateralView.GetBuildingType.IsEstablishmentSystemEnabled, BuildInLocationLateralView.GetBuildingType.IsProducing)]"
+						size = { 88 -1 }
+						visible = "[BuildInLocationLateralView.GetBuildingType.GrantsControl]"
 						blockoverride "sort_by_key_button_texture" {
-							texture = "gfx/interface/icons/flat_icons/building_panel/establishment.dds"
+							texture = "gfx/interface/icons/sort/control.dds"
 						}
 					}
 
 					sort_by_key_button = {
 						name = "number_building"
 						using = layoutpolicy_expanding
-						# size = { 150 -1 }
 					}
 				}
 
@@ -1102,13 +1154,13 @@
 				}
 				blockoverride "scroll_list_content" {
 					addcolumn = 100%
-					addrow = 56
+					addrow = 60
 					datamodel = "[BuildInLocationLateralView.GetItems]"
 					item = {
 						widget = {
-							size = { 100% 56 }
+							size = { 100% 60 }
 							widget = {
-								size = { 99% 54 }
+								size = { 100% 58 }
 								parentanchor = center
 								hbox = {
 									using = layoutpolicy_expanding

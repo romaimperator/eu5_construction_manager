@@ -437,7 +437,7 @@ lateralview = {
 					sort_by_key_button = {
 						name = "number_building"
 						layoutpolicy_vertical = expanding
-						size = { 140 -1 }
+						size = { 125 -1 }
 					}
 				}
 

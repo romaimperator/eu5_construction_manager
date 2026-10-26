@@ -65,6 +65,11 @@
 				using = bg_card_header_01_default
 				blockoverride "header_color" { using = color_economy_texture }
 			}
+			background = {
+				visible = "[AutomatedSystemsItem.IsName('tradepolicies')]"
+				using = bg_card_header_01_default
+				blockoverride "header_color" { using = color_economy_texture }
+			}
 			# Production
 			background = {
 				visible = "[AutomatedSystemsItem.IsName('buildings')]"
@@ -229,6 +234,12 @@
 				title = "[AutomatedSystemsItem.GetClickAction]"
 				visible = "[AutomatedSystemsItem.IsName('trade')]"
 				on_action = "[OpenLateralViewWithParams('trade', 'subtab = markets')]"
+			}
+			action_tooltip = {
+				click_type = right
+				title = "[AutomatedSystemsItem.GetClickAction]"
+				visible = "[AutomatedSystemsItem.IsName('tradepolicies')]"
+				on_action = "[OpenLateralView('trade_policies')]"
 			}
 			action_tooltip = {
 				click_type = right
@@ -429,6 +440,7 @@
 							ConceptIcon = { visible = "[AutomatedSystemsItem.IsName('replacegenerals')]" texture = "[GetConceptTexture('general')]" }
 							ConceptIcon = { visible = "[AutomatedSystemsItem.IsName('replaceadmirals')]" texture = "[GetConceptTexture('admiral')]" }
 							ConceptIcon = { visible = "[AutomatedSystemsItem.IsName('privateers')]" texture = "[GetConceptTexture('privateer')]" }
+							ConceptIcon = { visible = "[AutomatedSystemsItem.IsName('tradepolicies')]" texture = "[GetConceptTexture('tariffs')]" }
 						}
 					}
 					blockoverride "title_text" {
@@ -469,6 +481,7 @@
 							text_single = { size = { 100% 100% } using = Font_Type_Flavor autoresize = no align = left|nobaseline alwaystransparent = yes visible = "[AutomatedSystemsItem.IsName('replacegenerals')]" text = "[general|e]" }
 							text_single = { size = { 100% 100% } using = Font_Type_Flavor autoresize = no align = left|nobaseline alwaystransparent = yes visible = "[AutomatedSystemsItem.IsName('replaceadmirals')]" text = "[admiral|e]" }
 							text_single = { size = { 100% 100% } using = Font_Type_Flavor autoresize = no align = left|nobaseline alwaystransparent = yes visible = "[AutomatedSystemsItem.IsName('privateers')]" text = "[privateer|e]" }
+							text_single = { size = { 100% 100% } using = Font_Type_Flavor autoresize = no align = left|nobaseline alwaystransparent = yes visible = "[AutomatedSystemsItem.IsName('tradepolicies')]" text = "[tariffs|e]" }
 						}
 					}
 					blockoverride "tooltip_content" {
@@ -552,6 +565,7 @@
 					ConceptIcon = { visible = "[AutomatedSystemsItem.IsName('replacegenerals')]"      texture = "[GetConceptTexture('general')]"           }
 					ConceptIcon = { visible = "[AutomatedSystemsItem.IsName('replaceadmirals')]"      texture = "[GetConceptTexture('admiral')]"           }
 					ConceptIcon = { visible = "[AutomatedSystemsItem.IsName('privateers')]"           texture = "[GetConceptTexture('privateer')]"         }
+					ConceptIcon = { visible = "[AutomatedSystemsItem.IsName('tradepolicies')]"        texture = "[GetConceptTexture('tariffs')]"           }
 				}
 
 				text_single = {
@@ -599,7 +613,12 @@
 					action_tooltip = {
 						title = "[AutomatedSystemsItem.GetClickAction]"
 						visible = "[AutomatedSystemsItem.IsName('trade')]"
-						on_action = "[OpenLateralViewWithParams('trade', 'subtab = trades')]"
+						on_action = "[OpenLateralViewWithParams('trade', 'subtab = markets')]"
+					}
+					action_tooltip = {
+						title = "[AutomatedSystemsItem.GetClickAction]"
+						visible = "[AutomatedSystemsItem.IsName('tradepolicies')]"
+						on_action = "[OpenLateralView('trade_policies')]"
 					}
 					action_tooltip = {
 						title = "[AutomatedSystemsItem.GetClickAction]"
@@ -752,6 +771,7 @@
 				spacing = 5
 
 				vbox = {
+					visible = no
 					using = bg_dynasty_header
 					layoutpolicy_horizontal = expanding
 					margin = { 10 10 }
@@ -819,7 +839,7 @@
 						text_single = {
 							layoutpolicy_horizontal = expanding
 							margin = { 15 0 }
-							raw_text = "[AutomatedSystemsItem.GetDiplomatReserveSliderScaled|1]"
+							raw_text = "[AutomatedSystemsItem.GetDiplomatReserveSliderScaled|0]"
 						}
 					}
 				}
@@ -834,8 +854,10 @@
 						layoutpolicy_horizontal = expanding
 						spacing = 8
 						checkbox_square_alt = {
+							enabled = "[AutomatedSystemsItem.IsEnabled]"
 							action_tooltip = {
 								title = "AUTOMATE_DIPLO_IMPROVE_OPINION"
+								enabled = "[AutomatedSystemsItem.IsEnabled]"
 								on_action = "[AutomatedSystemsItem.ToggleImproveOpinion]"
 							}
 							down = "[AutomatedSystemsItem.IsImproveOpinionEnabled]"
@@ -859,8 +881,10 @@
 						layoutpolicy_horizontal = expanding
 						spacing = 8
 						checkbox_square_alt = {
+							enabled = "[AutomatedSystemsItem.IsEnabled]"
 							action_tooltip = {
 								title = "AUTOMATE_DIPLO_SEND_GIFTS"
+								enabled = "[AutomatedSystemsItem.IsEnabled]"
 								on_action = "[AutomatedSystemsItem.ToggleSendGifts]"
 							}
 							down = "[AutomatedSystemsItem.IsSendGiftsEnabled]"
@@ -884,8 +908,10 @@
 						layoutpolicy_horizontal = expanding
 						spacing = 8
 						checkbox_square_alt = {
+							enabled = "[AutomatedSystemsItem.IsEnabled]"
 							action_tooltip = {
 								title = "AUTOMATE_DIPLO_CURRY_FAVORS"
+								enabled = "[AutomatedSystemsItem.IsEnabled]"
 								on_action = "[AutomatedSystemsItem.ToggleCurryFavors]"
 							}
 							down = "[AutomatedSystemsItem.IsCurryFavorsEnabled]"
@@ -909,8 +935,10 @@
 						layoutpolicy_horizontal = expanding
 						spacing = 8
 						checkbox_square_alt = {
+							enabled = "[AutomatedSystemsItem.IsEnabled]"
 							action_tooltip = {
 								title = "AUTOMATE_DIPLO_ROYAL_MARRIAGES"
+								enabled = "[AutomatedSystemsItem.IsEnabled]"
 								on_action = "[AutomatedSystemsItem.ToggleRoyalMarriages]"
 							}
 							down = "[AutomatedSystemsItem.IsRoyalMarriagesEnabled]"
@@ -934,33 +962,10 @@
 						layoutpolicy_horizontal = expanding
 						spacing = 8
 						checkbox_square_alt = {
-							action_tooltip = {
-								title = "AUTOMATE_DIPLO_ALLIANCES"
-								on_action = "[AutomatedSystemsItem.ToggleAlliancesAndPacts]"
-							}
-							down = "[AutomatedSystemsItem.IsAlliancesAndPactsEnabled]"
-							tooltipwidget = {
-								BasicFunctionalTooltip = {
-									blockoverride "tooltip_content" {
-										TooltipTextBlock = {
-											textcontext = "AUTOMATE_DIPLO_ALLIANCES_TOOLTIP"
-										}
-									}
-								}
-							}
-						}
-						text_single = {
-							layoutpolicy_horizontal = expanding
-							using = Font_Type_Standard
-							text = "AUTOMATE_DIPLO_ALLIANCES"
-						}
-					}
-					hbox = {
-						layoutpolicy_horizontal = expanding
-						spacing = 8
-						checkbox_square_alt = {
+							enabled = "[AutomatedSystemsItem.IsEnabled]"
 							action_tooltip = {
 								title = "AUTOMATE_DIPLO_SUBJECTS"
+								enabled = "[AutomatedSystemsItem.IsEnabled]"
 								on_action = "[AutomatedSystemsItem.ToggleManageSubjects]"
 							}
 							down = "[AutomatedSystemsItem.IsManageSubjectsEnabled]"
@@ -984,16 +989,18 @@
 						layoutpolicy_horizontal = expanding
 						spacing = 8
 						checkbox_square_alt = {
+							enabled = "[AutomatedSystemsItem.IsEnabled]"
 							action_tooltip = {
-								title = "AUTOMATE_DIPLO_ORGANIZATIONS"
-								on_action = "[AutomatedSystemsItem.ToggleInternationalOrganizations]"
+								title = "AUTOMATE_DIPLO_ANNEX_SUBJECTS"
+								enabled = "[AutomatedSystemsItem.IsEnabled]"
+								on_action = "[AutomatedSystemsItem.ToggleAnnexSubjects]"
 							}
-							down = "[AutomatedSystemsItem.IsInternationalOrganizationsEnabled]"
+							down = "[AutomatedSystemsItem.IsAnnexSubjectsEnabled]"
 							tooltipwidget = {
 								BasicFunctionalTooltip = {
 									blockoverride "tooltip_content" {
 										TooltipTextBlock = {
-											textcontext = "AUTOMATE_DIPLO_ORGANIZATIONS_TOOLTIP"
+											textcontext = "AUTOMATE_DIPLO_ANNEX_SUBJECTS_TOOLTIP"
 										}
 									}
 								}
@@ -1002,23 +1009,25 @@
 						text_single = {
 							layoutpolicy_horizontal = expanding
 							using = Font_Type_Standard
-							text = "AUTOMATE_DIPLO_ORGANIZATIONS"
+							text = "AUTOMATE_DIPLO_ANNEX_SUBJECTS"
 						}
 					}
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						spacing = 8
 						checkbox_square_alt = {
+							enabled = "[AutomatedSystemsItem.IsEnabled]"
 							action_tooltip = {
-								title = "AUTOMATE_DIPLO_DECLARE_WAR"
-								on_action = "[AutomatedSystemsItem.ToggleDeclareWar]"
+								title = "AUTOMATE_DIPLO_ACCESS_REQUESTS"
+								enabled = "[AutomatedSystemsItem.IsEnabled]"
+								on_action = "[AutomatedSystemsItem.ToggleAccessRequests]"
 							}
-							down = "[AutomatedSystemsItem.IsDeclareWarEnabled]"
+							down = "[AutomatedSystemsItem.IsAccessRequestsEnabled]"
 							tooltipwidget = {
 								BasicFunctionalTooltip = {
 									blockoverride "tooltip_content" {
 										TooltipTextBlock = {
-											textcontext = "AUTOMATE_DIPLO_DECLARE_WAR_TOOLTIP"
+											textcontext = "AUTOMATE_DIPLO_ACCESS_REQUESTS_TOOLTIP"
 										}
 									}
 								}
@@ -1027,7 +1036,283 @@
 						text_single = {
 							layoutpolicy_horizontal = expanding
 							using = Font_Type_Standard
-							text = "AUTOMATE_DIPLO_DECLARE_WAR"
+							text = "AUTOMATE_DIPLO_ACCESS_REQUESTS"
+						}
+					}
+					button_regular_icon = {
+						layoutpolicy_horizontal = expanding
+						action_tooltip = {
+							title = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_POOL"
+							on_action = "[ShowSelectImproveRelationsTargets]"
+						}
+						blockoverride "button_text" {
+							visible = yes
+							text = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_POOL"
+						}
+						tooltipwidget = {
+							BasicFunctionalTooltip = {
+								blockoverride "tooltip_content" {
+									TooltipTextBlock = {
+										textcontext = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_POOL_TOOLTIP"
+									}
+								}
+							}
+						}
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 3
+						button_regular_icon = {
+							layoutpolicy_horizontal = expanding
+							action_tooltip = {
+								title = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_SUBJECTS"
+								on_action = "[AddSubjectsToImproveRelationsTargets]"
+							}
+							blockoverride "button_text" {
+								visible = yes
+								text = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_SUBJECTS"
+							}
+							tooltipwidget = {
+								BasicFunctionalTooltip = {
+									blockoverride "tooltip_content" {
+										TooltipTextBlock = {
+											textcontext = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_SUBJECTS_DESC"
+										}
+									}
+								}
+							}
+						}
+						button_regular_icon = {
+							layoutpolicy_horizontal = expanding
+							action_tooltip = {
+								title = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_ALLIES"
+								on_action = "[AddAlliesToImproveRelationsTargets]"
+							}
+							blockoverride "button_text" {
+								visible = yes
+								text = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_ALLIES"
+							}
+							tooltipwidget = {
+								BasicFunctionalTooltip = {
+									blockoverride "tooltip_content" {
+										TooltipTextBlock = {
+											textcontext = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_ALLIES_DESC"
+										}
+									}
+								}
+							}
+						}
+						button_regular_icon = {
+							layoutpolicy_horizontal = expanding
+							action_tooltip = {
+								title = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_NEIGHBORS"
+								on_action = "[AddNeighborsToImproveRelationsTargets]"
+							}
+							blockoverride "button_text" {
+								visible = yes
+								text = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_NEIGHBORS"
+							}
+							tooltipwidget = {
+								BasicFunctionalTooltip = {
+									blockoverride "tooltip_content" {
+										TooltipTextBlock = {
+											textcontext = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_NEIGHBORS_DESC"
+										}
+									}
+								}
+							}
+						}
+						button_regular_icon = {
+							layoutpolicy_horizontal = expanding
+							action_tooltip = {
+								title = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_OUTRAGED"
+								on_action = "[AddOutragedToImproveRelationsTargets]"
+							}
+							blockoverride "button_text" {
+								visible = yes
+								text = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_OUTRAGED"
+							}
+							tooltipwidget = {
+								BasicFunctionalTooltip = {
+									blockoverride "tooltip_content" {
+										TooltipTextBlock = {
+											textcontext = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_OUTRAGED_DESC"
+										}
+									}
+								}
+							}
+						}
+					}
+					button_regular_icon = {
+						layoutpolicy_horizontal = expanding
+						visible = "[Not(IsDataModelEmpty(AutomationLateralView.GetImproveRelationsTargets))]"
+						action_tooltip = {
+							title = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_CLEAR"
+							on_action = "[ClearImproveRelationsTargets]"
+						}
+						blockoverride "button_text" {
+							visible = yes
+							text = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_CLEAR"
+						}
+						tooltipwidget = {
+							BasicFunctionalTooltip = {
+								blockoverride "tooltip_content" {
+									TooltipTextBlock = {
+										textcontext = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_PRESET_CLEAR_DESC"
+									}
+								}
+							}
+						}
+					}
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 3
+						margin = { 0 3 }
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							using = Font_Type_Headers
+							visible = "[Not(IsDataModelEmpty(AutomationLateralView.GetImproveRelationsTargets))]"
+							text = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_POOL_LIST_HEADER"
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							autoresize = no
+							size = { -1 34 }
+							align = left|nobaseline
+							using = Font_Type_Flavor
+							visible = "[IsDataModelEmpty(AutomationLateralView.GetImproveRelationsTargets)]"
+							text = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_POOL_EMPTY"
+						}
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 2
+							datamodel = "[AutomationLateralView.GetImproveRelationsTargets]"
+							item = {
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 5
+
+									widget = {
+										size = { 54 36 }
+										datacontext = "[ImproveRelationsTargetItem.GetCountry]"
+										country_flag_small = {
+											size = { 100% 100% }
+										}
+									}
+
+									text_single = {
+										layoutpolicy_horizontal = expanding
+										using = Font_Type_Standard
+										datacontext = "[ImproveRelationsTargetItem.GetCountry]"
+										text = "[Country.GetName]"
+									}
+
+									button = {
+										using = country_filter_button
+										blockoverride "functional_tooltip" {
+											tooltipwidget = { BasicFunctionalTooltip = {} }
+											action_tooltip = {
+												click_type = left
+												click_mode = single
+												title = "AUTOMATE_DIPLO_IMPROVE_RELATIONS_POOL_REMOVE"
+												on_action = "[ImproveRelationsTargetItem.Remove]"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			vbox = { # Trade policy strategy radio buttons.
+				visible = "[AutomatedSystemsItem.IsName('tradepolicies')]"
+				layoutpolicy_horizontal = expanding
+				margin = { 10 10 }
+				spacing = 5
+
+				vbox = {
+					using = bg_dynasty_header
+					layoutpolicy_horizontal = expanding
+					margin = { 10 10 }
+					spacing = 3
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						checkbox_round_alt = {
+							action_tooltip = {
+								title = "TRADE_POLICY_STRATEGY_MERCANTILIST"
+								on_action = "[AutomatedSystemsItem.SetTradePolicyStrategy('mercantilist')]"
+							}
+							down = "[AutomatedSystemsItem.IsTradePolicyStrategy('mercantilist')]"
+							tooltipwidget = {
+								BasicFunctionalTooltip = {
+									blockoverride "tooltip_content" {
+										TooltipTextBlock = {
+											textcontext = "TRADE_POLICY_STRATEGY_MERCANTILIST_DESC"
+										}
+									}
+								}
+							}
+						}
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							using = Font_Type_Standard
+							text = "TRADE_POLICY_STRATEGY_MERCANTILIST"
+						}
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						checkbox_round_alt = {
+							action_tooltip = {
+								title = "TRADE_POLICY_STRATEGY_BALANCED"
+								on_action = "[AutomatedSystemsItem.SetTradePolicyStrategy('balanced')]"
+							}
+							down = "[AutomatedSystemsItem.IsTradePolicyStrategy('balanced')]"
+							tooltipwidget = {
+								BasicFunctionalTooltip = {
+									blockoverride "tooltip_content" {
+										TooltipTextBlock = {
+											textcontext = "TRADE_POLICY_STRATEGY_BALANCED_DESC"
+										}
+									}
+								}
+							}
+						}
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							using = Font_Type_Standard
+							text = "TRADE_POLICY_STRATEGY_BALANCED"
+						}
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+						checkbox_round_alt = {
+							action_tooltip = {
+								title = "TRADE_POLICY_STRATEGY_FREE_TRADE"
+								on_action = "[AutomatedSystemsItem.SetTradePolicyStrategy('free_trade')]"
+							}
+							down = "[AutomatedSystemsItem.IsTradePolicyStrategy('free_trade')]"
+							tooltipwidget = {
+								BasicFunctionalTooltip = {
+									blockoverride "tooltip_content" {
+										TooltipTextBlock = {
+											textcontext = "TRADE_POLICY_STRATEGY_FREE_TRADE_DESC"
+										}
+									}
+								}
+							}
+						}
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							using = Font_Type_Standard
+							text = "TRADE_POLICY_STRATEGY_FREE_TRADE"
 						}
 					}
 				}

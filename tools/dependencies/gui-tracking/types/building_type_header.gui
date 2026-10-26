@@ -10,7 +10,6 @@
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
 			ignoreinvisible = yes
-			margin_right = 15
 
 			hbox = {
 				margin = {2 1}
@@ -29,7 +28,7 @@
 						parentanchor = center
 
 						datacontext = "[BuildingItem.GetBuildingItemUIAction]"
-						visible = "[Or(ProductionView.IsLocationFilterEnabled, Not(ProductionView.HasBestBuildLocation))]"
+						visible = yes
 
 						onmousehierarchyenter = "[BuildingItem.OnMouseEnter(PdxGuiWidget.AccessSelf)]"
 						using = button_action_provider
@@ -69,63 +68,6 @@
 							on_action = "[SelectLocationToBuildDefault(BuildingItem.GetBuildingType)]"
 							on_action = "[SelectLocationToBuildWithLocation(BuildingItem.GetBuildingType, ProductionView.GetSelectedLocation.GetId, '(bool)no')]"
 							on_action = "[PlayAudioEffect('UI_action_building_build')]"
-						}
-					}
-
-					card_header_button_buildings = {
-						size = { 100% 40 }
-
-						parentanchor = center
-
-						datacontext = "[BuildingItem.GetBuildingItemUIAction]"
-						visible = "[And(Not(ProductionView.IsLocationFilterEnabled), ProductionView.HasBestBuildLocation)]"
-
-						onmousehierarchyenter = "[BuildingItem.OnMouseEnter(PdxGuiWidget.AccessSelf)]"
-						using = button_action_provider
-
-						datacontext = "[BuildingItem.GetBuildingType]"
-						datacontext = "[ProductionView.GetBuildRankingItems]"
-						datacontext = "[ProductionView.GetBestBuildLocation]"
-
-						tooltipwidget = {
-							using = BuildingType_production_tooltip
-						}
-
-						action_tooltip = {
-							click_type = left
-							click_mode = single
-							visible = "[And(Not(ProductionView.IsLocationFilterEnabled), BuildingItem.CanBuildAnyBuilding)]"
-							title = "BUILD_BUILDING_HEADER"
-							on_action = "[SelectLocationToBuildDefault(BuildingItem.GetBuildingType)]"
-							on_action = "[PlayAudioEffect('UI_action_building_build')]"
-						}
-
-						action_tooltip = {
-							click_type = left
-							click_mode = single
-							visible = "[And(Not(ProductionView.IsLocationFilterEnabled), Not(BuildingItem.CanBuildAnyBuilding))]"
-							title = "CAN_NOT_BUILD_ANY_BUILDING"
-							on_action = "[SelectLocationToBuildDefault(BuildingItem.GetBuildingType)]"
-						}
-
-						action_tooltip = {
-							click_type = left
-							click_mode = single
-							visible = "[ProductionView.IsLocationFilterEnabled]"
-							title = "BUILD_BUILDING_HEADER"
-							on_action = "[SelectLocationToBuildDefault(BuildingItem.GetBuildingType)]"
-							on_action = "[SelectLocationToBuildWithLocation(BuildingItem.GetBuildingType, ProductionView.GetSelectedLocation.GetId, '(bool)no')]"
-							on_action = "[PlayAudioEffect('UI_action_building_build')]"
-						}
-
-						action_tooltip = {
-							click_type = right
-							click_mode = single
-							title = "BUILDING_IN_LOCATION_ACTION"
-							cost = "BUILDING_IN_LOCATION_ACTION_COST"
-							description = "[CanBuildOrExpandBuildingInfo(BuildingType.Self, ProductionView.GetBestBuildLocation)]"
-							on_action = "[BuildOrExpandBuildingDefault(BuildingType.Self, ProductionView.GetBestBuildLocation)]"
-							enabled = "[CanBuildOrExpandBuilding(BuildingType.Self, ProductionView.GetBestBuildLocation)]"
 						}
 					}
 
@@ -196,7 +138,7 @@
 						hbox = {
 							spacing = 5
 							margin = { 35 0 }
-							margin_right = 10
+							margin_right = 15
 							datacontext = "[BuildingItem.GetBuildingType]"
 							
 							widget = {
@@ -217,7 +159,8 @@
 							}
 
 							text_single = {
-								size = {129 30}
+								layoutpolicy_horizontal = expanding
+								size = {-1 30}
 								autoresize = no
 								align = left|nobaseline
 								default_format = "#yellow_titles"
@@ -228,11 +171,34 @@
 								}
 							}
 
+							icon = { #capital
+								size = { 22 22 }
+								datacontext = "[BuildingType]"
+								visible = "[BuildingType.BuildOnlyInCapital]"
+								texture = "[GetConceptTexture('capital')]"
+								
+								tooltipwidget = {
+									SimpleContextualTooltipType = {
+										blockoverride "title_icon" {
+											icon = {
+												using = tooltip_title_icon_size
+												texture = "[GetConceptTexture('capital')]"
+											}
+										}
+										blockoverride "concept_link" {
+											text = "[capital|e]"
+										}
+
+										lowpriotextcontext = "BUILDING_TYPE_ONLY_IN_CAPITAL"
+									}
+								}	
+							}
+
 							widget = {
-								size = {80 25}
+								size = {70 25}
 								hbox = {
 									button_square_checkbox = {
-										visible = "[And(BuildingItem.HasBuildings, BuildingItem.GetBuildingType.IsMultipleLevels)]"
+										visible = "[And3(BuildingItem.HasBuildings, BuildingItem.GetBuildingType.IsMultipleLevels, Not(BuildingItem.GetBuildingType.OnlyEstatesCanBuild))]"
 										size = { 20 20 }
 										tooltipwidget = {
 											using = AutoExpand_Building_Tooltip
@@ -260,6 +226,7 @@
 
 										action_tooltip = {
 											on_action = "[ToggleAutoExpandBuildings(BuildingItem.GetBuildingsFunc)]"
+											description = "[GetAutoExpandBuildingsAutomationWarning]"
 											title = "[SelectLocalization( AreBuildingsAutoExpand(BuildingItem.GetBuildingsFunc), 'TOGGLE_AUTO_EXPAND_ALL_ON', 'TOGGLE_AUTO_EXPAND_ALL_OFF' )]"
 										}
 									}
@@ -345,7 +312,7 @@
 
 							# PROFIT
 							widget = {
-								size = {120 40}
+								size = {110 40}
 								hbox = {
 									visible = "[And(BuildingItem.GetBuildingType.IsProducing, BuildingItem.HasPossibleBuildings)]"
 									spacing = 3
@@ -419,7 +386,7 @@
 
 							# LEVELS
 							widget = {
-								size = { 75 40 }
+								size = { 70 40 }
 								hbox = {
 									expand = {}
 									spacing = 5
@@ -463,69 +430,77 @@
 										}
 									}
 
-									icon = {
-										visible = "[And3(BuildingItem.CanBuildAnyBuilding, BuildingItem.GetBuildingType.BuildOnlyInCapital, Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)))]"
-										texture = "gfx/interface/icons/flat_icons/building_panel/build_capital.dds"
-										size = { 24 24 }
+									text_single = {
+										align = right|nobaseline
+										maximumsize = {30 -1}
+										visible = "[GreaterThan_CFixedPoint(BuildingItem.GetTotalLevelsUnderUpgrade, '(CFixedPoint)0')]"
+										raw_text = "#G -[BuildingItem.GetTotalLevelsUnderUpgrade|0]#!"
+										fontsize = 15
 									}
 
-									icon = {
-										visible = "[And(BuildingItem.CanBuildAnyBuilding, Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType))]"
-										texture = "gfx/interface/buttons/flats/upgrade_button2.dds"
-										modify_texture = {
-											using = color_gold_texture
-										}
-										modify_texture = {
-											using = overlay_window_texture
-											blend_mode = overlay
-											alpha = 0.9
-										}
-										size = { 24 24 }
-									}
+									# icon = {
+									# 	visible = "[And3(BuildingItem.CanBuildAnyBuilding, BuildingItem.GetBuildingType.BuildOnlyInCapital, Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)))]"
+									# 	texture = "gfx/interface/icons/flat_icons/building_panel/build_capital.dds"
+									# 	size = { 24 24 }
+									# }
 
-									icon = {
-										visible = "[And3(BuildingItem.CanBuildAnyBuilding, Not(BuildingItem.GetBuildingType.BuildOnlyInCapital), Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)))]"
-										texture = "gfx/interface/icons/flat_icons/building_panel/build.dds"
-										size = { 24 24 }
-									}
+									# icon = {
+									# 	visible = "[And(BuildingItem.CanBuildAnyBuilding, Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType))]"
+									# 	texture = "gfx/interface/buttons/flats/upgrade_button2.dds"
+									# 	modify_texture = {
+									# 		using = color_gold_texture
+									# 	}
+									# 	modify_texture = {
+									# 		using = overlay_window_texture
+									# 		blend_mode = overlay
+									# 		alpha = 0.9
+									# 	}
+									# 	size = { 24 24 }
+									# }
 
-									icon = {
-										visible = "[And(Not(BuildingItem.CanBuildAnyBuilding), BuildingItem.GetBuildingType.BuildOnlyInCapital)]"
-										texture = "gfx/interface/icons/flat_icons/building_panel/not_build_capital.dds"
-										size = { 24 24 }
+									# icon = {
+									# 	visible = "[And3(BuildingItem.CanBuildAnyBuilding, Not(BuildingItem.GetBuildingType.BuildOnlyInCapital), Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)))]"
+									# 	texture = "gfx/interface/icons/flat_icons/building_panel/build.dds"
+									# 	size = { 24 24 }
+									# }
 
-										modify_texture = {
-											using = overlay_window_texture
-											blend_mode = overlay
-											alpha = 0.7
-										}
+									# icon = {
+									# 	visible = "[And(Not(BuildingItem.CanBuildAnyBuilding), BuildingItem.GetBuildingType.BuildOnlyInCapital)]"
+									# 	texture = "gfx/interface/icons/flat_icons/building_panel/not_build_capital.dds"
+									# 	size = { 24 24 }
 
-										modify_texture = {
-											texture = "gfx/interface/buttons/buttons_texture.dds"
-											texture_density = 2
-											blend_mode = overlay
-											alpha = 0.6
-										}
-									}
+									# 	modify_texture = {
+									# 		using = overlay_window_texture
+									# 		blend_mode = overlay
+									# 		alpha = 0.7
+									# 	}
 
-									icon = {
-										visible = "[And(Not(BuildingItem.CanBuildAnyBuilding), Not(BuildingItem.GetBuildingType.BuildOnlyInCapital))]"
-										texture = "gfx/interface/icons/flat_icons/building_panel/not_build.dds"
-										size = { 24 24 }
+									# 	modify_texture = {
+									# 		texture = "gfx/interface/buttons/buttons_texture.dds"
+									# 		texture_density = 2
+									# 		blend_mode = overlay
+									# 		alpha = 0.6
+									# 	}
+									# }
 
-										modify_texture = {
-											using = overlay_window_texture
-											blend_mode = overlay
-											alpha = 0.7
-										}
+									# icon = {
+									# 	visible = "[And(Not(BuildingItem.CanBuildAnyBuilding), Not(BuildingItem.GetBuildingType.BuildOnlyInCapital))]"
+									# 	texture = "gfx/interface/icons/flat_icons/building_panel/not_build.dds"
+									# 	size = { 24 24 }
 
-										modify_texture = {
-											texture = "gfx/interface/buttons/buttons_texture.dds"
-											texture_density = 2
-											blend_mode = overlay
-											alpha = 0.6
-										}
-									}
+									# 	modify_texture = {
+									# 		using = overlay_window_texture
+									# 		blend_mode = overlay
+									# 		alpha = 0.7
+									# 	}
+
+									# 	modify_texture = {
+									# 		texture = "gfx/interface/buttons/buttons_texture.dds"
+									# 		texture_density = 2
+									# 		blend_mode = overlay
+									# 		alpha = 0.6
+									# 	}
+									# }
 								}
 							}
 						}

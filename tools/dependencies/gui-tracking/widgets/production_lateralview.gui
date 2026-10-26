@@ -205,13 +205,13 @@ lateralview = {
 								}
 							}
 						}
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							using = production_view_subtabs
+						}
 					}
 
 					blockoverride "searchbar_extra_pre_content"{
-						using = production_view_subtabs
-					}
-
-					blockoverride "custom_search_filter"{
 						using = production_view_poptypes
 					}
 
@@ -248,25 +248,207 @@ lateralview = {
 						}
 					}
 
-					blockoverride "scroll_list_layout" {
-						vbox = {
-							fixedgridbox = {
-								visible = "[ProductionView.Vars.NotExistOrHasValue( 'display', 'lists' )]"
-								addrow = 48
-								addcolumn = 100%
-								datamodel = "[ProductionView.GetBuildingItems]"
-								item = {
-									widget = {
-										size = { 100% 48 }
+					blockoverride "scroll_list_content" {
+						visible = "[ProductionView.Vars.NotExistOrHasValue( 'display', 'lists' )]"
+						datamodel = "[ProductionView.GetBuildingItems]"
+						addcolumn = 100%
+						addrow = 48
+						datamodel_reuse_widgets = yes
+						item = {
+							widget = {
+								size = { 100% 48 }
+								vbox = {
+									margin_top = 5
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 3
 
-										vbox = {
-											margin_top = 5
-											building_type_header = {}
+										building_type_header = { layoutpolicy_horizontal = expanding }
+
+										widget = {
+											size = { 35 40 }
+											onmousehierarchyenter = "[ProductionView.RebuildBuildRankingItems(BuildingItem.GetBuildingType)]"
+											using = bg_building_card_colors
+											blockoverride "header_pattern_texture_density" { texture_density = 2.5 }
+
+											card_header_button_04 = {
+												parentanchor = center
+												size = { 100% 100% }
+												datacontext = "[BuildingItem.GetBuildingType]"
+												datacontext = "[ProductionView.GetBuildRankingItems]"
+
+												enabled = "[Or3(And(Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)), Or(BuildingItem.CanBuildAnyBuilding, ProductionView.HasUpgradableFromCurrentTier(BuildingItem.GetBuildingType))), And(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType), ProductionView.CanMassUpgrade(BuildingItem.GetBuildingType)), BuildingItem.AreBuildingsUnderConstruction)]"
+
+												icon = {
+													parentanchor = center
+													size = { 24 24 }
+													visible = "[And(Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)), Not(ProductionView.HasUpgradableFromCurrentTier(BuildingItem.GetBuildingType)))]"
+													texture = "gfx/interface/icons/flat_icons/mass_construct.dds"
+												}
+												icon = {
+													parentanchor = center
+													size = { 24 24 }
+													visible = "[And(Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)), ProductionView.HasUpgradableFromCurrentTier(BuildingItem.GetBuildingType))]"
+													texture = "gfx/interface/icons/flat_icons/mass_construct_upgrade.dds"
+												}
+												icon = {
+													parentanchor = center
+													size = { 24 24 }
+													visible = "[Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)]"
+													texture = "gfx/interface/icons/flat_icons/mass_upgrade.dds"
+												}
+
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = default
+													visible = "[And(BuildingItem.CanBuildAnyBuilding, Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)))]"
+													enabled = "[ProductionView.HasBestBuildLocationFor(BuildingItem.GetBuildingType)]"
+													title = "BUILDING_BEST_IN_LOCATION_ACTION_BUTTON"
+													on_action = "[ProductionView.BuildBestFromRankingItemsDefault(BuildingItem.GetBuildingType)]"
+													on_action = "[PlayAudioEffect('UI_action_building_build')]"
+												}
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = ctrl
+													visible = "[And(BuildingItem.CanBuildAnyBuilding, Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)))]"
+													enabled = "[ProductionView.HasBestBuildLocationFor(BuildingItem.GetBuildingType)]"
+													title = "BUILD_IN_BEST_LOCATION_ACTION_CTRL"
+													on_action = "[ProductionView.BuildBestFromRankingItemsCtrl(BuildingItem.GetBuildingType)]"
+													on_action = "[PlayAudioEffect('UI_action_building_build')]"
+												}
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = shift
+													visible = "[And(BuildingItem.CanBuildAnyBuilding, Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)))]"
+													enabled = "[ProductionView.HasBestBuildLocationFor(BuildingItem.GetBuildingType)]"
+													title = "BUILD_IN_BEST_LOCATION_ACTION_SHIFT"
+													on_action = "[ProductionView.BuildBestFromRankingItemsShift(BuildingItem.GetBuildingType)]"
+													on_action = "[PlayAudioEffect('UI_action_building_build')]"
+												}
+
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = default
+													visible = "[And(Not(BuildingItem.CanBuildAnyBuilding), Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)))]"
+													enabled = no
+													title = "BUILDING_BEST_IN_LOCATION_ACTION_BUTTON"
+													description = "BUILDING_IN_LOCATION_ACTION_NO_LOCATION"
+												}
+
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = alt
+													visible = "[Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType))]"
+													enabled = "[ProductionView.HasUpgradableFromCurrentTier(BuildingItem.GetBuildingType)]"
+													title = "UPGRADE_OBSOLETE_FROM_CURRENT_ACTION"
+													description = "UPGRADE_OBSOLETE_FROM_CURRENT_ACTION_DESC"
+													on_action = "[ProductionView.UpgradeObsoleteFromCurrentTier(BuildingItem.GetBuildingType)]"
+													on_action = "[PlayAudioEffect('UI_action_building_build')]"
+												}
+
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = default
+													visible = "[And(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType), ProductionView.CanMassUpgrade(BuildingItem.GetBuildingType))]"
+													enabled = "[ProductionView.CanMassUpgrade(BuildingItem.GetBuildingType)]"
+													title = "UPGRADING_BEST_IN_LOCATION_ACTION_BUTTON"
+													on_action = "[ProductionView.BuildBestFromRankingItemsDefault(BuildingItem.GetBuildingType)]"
+													on_action = "[PlayAudioEffect('UI_action_building_build')]"
+												}
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = default
+													visible = "[And(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType), Not(ProductionView.CanMassUpgrade(BuildingItem.GetBuildingType)))]"
+													enabled = no
+													title = "UPGRADING_BEST_IN_LOCATION_ACTION_BUTTON"
+													description = "UPGRADING_IN_LOCATION_ACTION_NO_LOCATION_PROD"
+												}
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = ctrl
+													visible = "[Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)]"
+													enabled = "[ProductionView.CanMassUpgrade(BuildingItem.GetBuildingType)]"
+													title = "UPGRADE_IN_BEST_LOCATION_ACTION_CTRL"
+													on_action = "[ProductionView.BuildBestFromRankingItemsCtrl(BuildingItem.GetBuildingType)]"
+													on_action = "[PlayAudioEffect('UI_action_building_build')]"
+												}
+												action_tooltip = {
+													click_type = left
+													click_mode = single
+													click_modifier = shift
+													visible = "[Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)]"
+													enabled = "[ProductionView.CanMassUpgrade(BuildingItem.GetBuildingType)]"
+													title = "UPGRADE_IN_BEST_LOCATION_ACTION_SHIFT"
+													on_action = "[ProductionView.BuildBestFromRankingItemsShift(BuildingItem.GetBuildingType)]"
+													on_action = "[PlayAudioEffect('UI_action_building_build')]"
+												}
+
+												action_tooltip = {
+													click_type = right
+													click_mode = single
+													click_modifier = default
+													visible = "[ProductionView.HasLastBuildLocationItemFor(BuildingItem.GetBuildingType)]"
+													title = "DEQUEUE_LAST_BUILDING_ACTION"
+													description = "[GetCancelConstructionInfo(ProductionView.GetBuildRankingItems.GetLastConstruction)]"
+													on_action = "[CancelConstruction(ProductionView.GetBuildRankingItems.GetLastConstruction)]"
+												}
+												action_tooltip = {
+													click_type = right
+													click_mode = single
+													click_modifier = default
+													visible = "[Not(ProductionView.HasLastBuildLocationItemFor(BuildingItem.GetBuildingType))]"
+													enabled = no
+													title = "DEQUEUE_LAST_BUILDING_ACTION"
+													description = "DEQUEUE_BUILDING_PRODUCTION_ACTION_NONE"
+												}
+												action_tooltip = {
+													click_type = right
+													click_mode = single
+													click_modifier = ctrl
+													visible = "[ProductionView.HasLastBuildLocationItemFor(BuildingItem.GetBuildingType)]"
+													title = "DEQUEUE_LATESTS_BUILDING_TYPE_ACTION"
+													description = "[GetCancelConstructionInfo(ProductionView.GetBuildRankingItems.GetLastConstruction)]"
+													on_action = "[ProductionView.CancelAllLastBuildLocations]"
+												}
+												action_tooltip = {
+													click_type = right
+													click_mode = single
+													click_modifier = ctrl
+													visible = "[Not(ProductionView.HasLastBuildLocationItemFor(BuildingItem.GetBuildingType))]"
+													enabled = no
+													title = "DEQUEUE_LATESTS_BUILDING_TYPE_ACTION"
+													description = "DEQUEUE_BUILDING_PRODUCTION_ACTION_NONE"
+												}
+
+												tooltipwidget = {
+													using = mass_build_ranking_and_dequeue_tt
+													blockoverride "extra_build_content" {
+														TooltipTextBlock = {
+															visible = "[And(Not(Player.CanUpgradeBuildingType(BuildingItem.GetBuildingType)), GreaterThan_int32(ProductionView.GetTotalRemainingUpgradeLevels(BuildingItem.GetBuildingType), '(int32)0'))]"
+															blockoverride "text" {
+																text = "BUILDING_MASS_UPGRADE_REMAINING_PROD"
+															}
+															blockoverride "textblock_background_tint" {
+																modify_texture = {
+																	using = color_turquoise_texture
+																}
+															}
+														}
+													}
+												}
+											}
 										}
 									}
 								}
 							}
-							expand = {}
 						}
 					}
 				}
@@ -420,13 +602,13 @@ lateralview = {
 								}
 							}
 						}
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							using = production_view_subtabs
+						}
 					}
 
 					blockoverride "searchbar_extra_pre_content"{
-						using = production_view_subtabs
-					}
-
-					blockoverride "custom_search_filter"{
 						using = production_view_poptypes
 					}
 
@@ -656,9 +838,8 @@ lateralview = {
 																					TooltipContentSection = {
 																						visible = "[BuildingItem.HasBuildingsLackingInput]"
 
-																						TooltipScrolledStringPairList = {
+																						TooltipStringPairList = {
 																							textcontext = "[BuildingItem.GetBuildingsInputGoodsInformation]"
-																							blockoverride "block_scrollarea" { maximumsize = { -1 120 } }
 																							blockoverride "textblock_background_tint"  {
 																								modify_texture = {
 																									using = color_red_texture
@@ -923,9 +1104,8 @@ lateralview = {
 																					TooltipContentSection = {
 																						visible = "[BuildingItem.HasBuildingsLackingInput]"
 
-																						TooltipScrolledStringPairList = {
+																						TooltipStringPairList = {
 																							textcontext = "[BuildingItem.GetBuildingsInputGoodsInformation]"
-																							blockoverride "block_scrollarea" { maximumsize = { -1 120 } }
 																							blockoverride "textblock_background_tint"  {
 																								modify_texture = {
 																									using = color_red_texture
@@ -1361,13 +1541,13 @@ lateralview = {
 								}
 							}
 						}
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							using = production_view_subtabs
+						}
 					}
 
 					blockoverride "searchbar_extra_pre_content"{
-						using = production_view_subtabs
-					}
-
-					blockoverride "custom_search_filter"{
 						using = production_view_poptypes
 					}
 
@@ -1544,13 +1724,13 @@ lateralview = {
 								}
 							}
 						}
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							using = production_view_subtabs
+						}
 					}
 
 					blockoverride "searchbar_extra_pre_content"{
-						using = production_view_subtabs
-					}
-
-					blockoverride "custom_search_filter"{
 						using = production_view_poptypes
 					}
 
