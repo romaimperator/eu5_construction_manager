@@ -1,0 +1,38 @@
+﻿# vanilla: in_game/gui/multiplayer_lobby.gui
+# mod: in_game/gui/cm_cmf_vanilla_type_updates.gui
+
+	type short_dlc_banner = button {
+		texture = "gfx/interface/alerts/dlc_alert_background_purple_short.dds"
+		texture_density = 4
+
+		onmousehierarchyenter = "[PdxGuiWidget.PushDLCMapModeOverride(GameDLC.Self)]"
+		onmousehierarchyleave = "[PdxGuiWidget.ClearDLCMapModeOverride]"
+
+		action_tooltip = {
+			title = "GAME_DLC_SHOW_VIEW_CLICK"
+			on_action = "[ShowDLCView(GameDLC.Self)]"
+		}
+
+		icon = {
+			parentanchor = center
+			size = "[PdxGuiWidget.KeepRatioFromWidthPercent('(float)1.0', '(float)0.75')]"
+			position = { 0 -4 }
+			texture = "[GameDLC.GetIcon]"
+		}
+
+		tooltipwidget = {
+			ExtraContentTooltipType = {
+				# blockoverride "title_header_color" { tintcolor = "[GetColorDLC(DlcEntry.Filename)]"}
+				blockoverride "title_text" { text = "[GameDLC.GetName]" }
+				blockoverride "owned_text" { text = "GAME_DLC_TOOLTIP_OWNED" }
+				blockoverride "installed_text" { text = "GAME_DLC_TOOLTIP_INSTALLED" }
+				blockoverride "mounted_text" { text = "GAME_DLC_TOOLTIP_MOUNTED" }
+				blockoverride "activated_text" { text = "GAME_DLC_TOOLTIP_ACTIVATED" }
+				blockoverride "ExtraContentTooltipType_background_texture" { texture = "[GameDLC.GetTooltipBackground]" }
+
+				blockoverride "flavor_text" {
+					text = "[GameDLC.GetTooltipDesc]"
+				}
+			}
+		}
+	}

@@ -35,12 +35,40 @@
       "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_town_rights_item_body.gui",
       "vanilla_file": "in_game/gui/location_window.gui"
     },
+    "template:location_town_rights_icon_strip": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/location_town_rights_icon_strip.gui",
+      "vanilla_file": "in_game/gui/town_rights.gui"
+    },
     "template:production_view_poptypes": {
       "base_widget": null,
       "mod_file": "in_game/gui/production_lateralview.gui",
       "namespace": null,
       "tracking_path": "tools/dependencies/gui-tracking/templates/production_view_poptypes.gui",
       "vanilla_file": "in_game/gui/production_lateralview.gui"
+    },
+    "template:town_rights_type_item": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/town_rights_type_item.gui",
+      "vanilla_file": "in_game/gui/town_rights.gui"
+    },
+    "template:unique_content_item_header_bg": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/unique_content_item_header_bg.gui",
+      "vanilla_file": "in_game/gui/multiplayer_lobby.gui"
+    },
+    "template:urban_rights_location_card": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/urban_rights_location_card.gui",
+      "vanilla_file": "in_game/gui/town_rights.gui"
     },
     "type:AutomationSystemStandardCard": {
       "base_widget": "AutomationCard",
@@ -56,6 +84,20 @@
       "tracking_path": "tools/dependencies/gui-tracking/types/FrontEndNews.gui",
       "vanilla_file": "main_menu/gui/frontend_mainview.gui"
     },
+    "type:LobbyCountryListWidget": {
+      "base_widget": "widget",
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": "MultiplayerLobby",
+      "tracking_path": "tools/dependencies/gui-tracking/types/LobbyCountryListWidget.gui",
+      "vanilla_file": "in_game/gui/multiplayer_lobby.gui"
+    },
+    "type:LobbyViewPlayerList": {
+      "base_widget": "widget",
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": "MultiplayerLobby",
+      "tracking_path": "tools/dependencies/gui-tracking/types/LobbyViewPlayerList.gui",
+      "vanilla_file": "in_game/gui/multiplayer_lobby.gui"
+    },
     "type:build_location_lateralview_panel_content": {
       "base_widget": "vbox",
       "mod_file": "in_game/gui/cm_build_location_lateralview.gui",
@@ -69,6 +111,27 @@
       "namespace": "GlorpUIBuildings",
       "tracking_path": "tools/dependencies/gui-tracking/types/building_type_header.gui",
       "vanilla_file": "in_game/gui/production_lateralview.gui"
+    },
+    "type:combat_country_ruler": {
+      "base_widget": "vbox",
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": "BattleTypes",
+      "tracking_path": "tools/dependencies/gui-tracking/types/combat_country_ruler.gui",
+      "vanilla_file": "in_game/gui/battle_lateralview.gui"
+    },
+    "type:diplomatic_relations_content": {
+      "base_widget": "filtered_sorted_list",
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": "SubheaderTypes",
+      "tracking_path": "tools/dependencies/gui-tracking/types/diplomatic_relations_content.gui",
+      "vanilla_file": "in_game/gui/foreign_country_lateralview.gui"
+    },
+    "type:dlc_banner": {
+      "base_widget": "button",
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": "MultiplayerLobby",
+      "tracking_path": "tools/dependencies/gui-tracking/types/dlc_banner.gui",
+      "vanilla_file": "in_game/gui/multiplayer_lobby.gui"
     },
     "type:food_production_location": {
       "base_widget": "widget",
@@ -118,6 +181,27 @@
       "namespace": "LocationWindowTypes",
       "tracking_path": "tools/dependencies/gui-tracking/types/row_building_card.gui",
       "vanilla_file": "in_game/gui/location_window.gui"
+    },
+    "type:short_dlc_banner": {
+      "base_widget": "button",
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": "MultiplayerLobby",
+      "tracking_path": "tools/dependencies/gui-tracking/types/short_dlc_banner.gui",
+      "vanilla_file": "in_game/gui/multiplayer_lobby.gui"
+    },
+    "type:unique_content_item_specific": {
+      "base_widget": "widget",
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": "MultiplayerLobby",
+      "tracking_path": "tools/dependencies/gui-tracking/types/unique_content_item_specific.gui",
+      "vanilla_file": "in_game/gui/multiplayer_lobby.gui"
+    },
+    "type:unit_action_category": {
+      "base_widget": "vbox",
+      "mod_file": "in_game/gui/cm_cmf_vanilla_type_updates.gui",
+      "namespace": "SingleUnitWindowTypes",
+      "tracking_path": "tools/dependencies/gui-tracking/types/unit_action_category.gui",
+      "vanilla_file": "in_game/gui/single_unit_window.gui"
     },
     "widget:building_view": {
       "base_widget": null,

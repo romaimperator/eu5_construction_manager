@@ -1,0 +1,214 @@
+﻿# vanilla: in_game/gui/town_rights.gui
+# mod: in_game/gui/cm_cmf_vanilla_type_updates.gui
+
+template urban_rights_location_card {
+	vbox = {
+		layoutpolicy_horizontal = expanding
+		margin = { 5 5 }
+		spacing = 4
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			using = bg_card_header_01_production
+			blockoverride "header_pattern_texture_density" {texture_density = 1.8}
+			margin = { 10 5 }
+			spacing = 6
+
+			background = {
+				texture = "gfx/interface/colors/whiteish.dds"
+				blend_mode = overlay
+				alpha = 0.1
+			}
+
+			icon = {
+				size = { 22 22 }
+				texture = "[Location.GetRankIcon]"
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				align = left|nobaseline
+				using = Font_Size_Medium
+				text = "[Location.GetName]"
+			}
+
+			text_single = {
+				autoresize = yes
+				align = right|nobaseline
+				using = Font_Size_Medium
+				raw_text = "[GetDataModelSize(Location.GetTownRights)]/[Location.GetPossibleTownRights]"
+
+				tooltipwidget = {
+					ContextualTooltipType = {
+						blockoverride "title_text" {
+							text = "LOCATION_TOWN_RIGHTS_TITLE"
+						}
+
+						blockoverride "concept_link" {
+							text = "[town_rights|e]"
+						}
+
+						blockoverride "title_icon_texture" {
+							texture = "[GetConceptTexture('town_rights')]"
+						}
+
+						blockoverride "tooltip_content" {
+							TooltipStringPairList = {
+								textcontext = "[Location.GetPossibleTownRightsInfo]"
+							}
+						}
+					}
+				}
+			}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			margin = { 8 2 }
+			spacing = 4
+
+			widget = {
+				layoutpolicy_horizontal = expanding
+				size = { -1 40 }
+				hbox = {
+					parentanchor = vcenter
+					spacing = 4
+
+					hbox = {
+						spacing = 4
+						datamodel = "[DataModelFirst(Location.GetTownRights, '(int32)10')]"
+						item = {
+							button = {
+								size = { 40 40 }
+
+								tooltipwidget = {
+									using = TownRights_tooltip
+								}
+
+								background = {
+									texture = "gfx/interface/component_tiles/town_rights_paper_background.dds"
+									spriteType = Corneredstretched
+									texture_density = 2
+								}
+
+								icon = {
+									parentanchor = center
+									size = { 34 34 }
+									texture = "[TownRights.GetType.GetIcon]"
+									texture_density = 2
+								}
+
+								action_tooltip = {
+									click_type = left
+									click_mode = confirm
+									visible = "[TownRights.HasUpgradePath]"
+									enabled = "[TownRights.CanUpgrade]"
+									title = "UPGRADE_LOCATION_TOWN_RIGHT"
+									conditions = "[TownRights.GetUpgradeConditions]"
+									cost = "[TownRights.GetUpgradeCost]"
+									on_action = "[TownRights.Upgrade]"
+								}
+
+								action_tooltip = {
+									click_type = right
+									click_mode = confirm
+									enabled = "[TownRights.CanRevoke]"
+									title = "REVOKE_LOCATION_TOWN_RIGHT"
+									conditions = "[TownRights.GetRevokeConditions]"
+									cost = "[TownRights.GetRevokeCost]"
+									on_action = "[TownRights.Revoke]"
+								}
+							}
+						}
+					}
+
+					text_single = {
+						margin = { 6 0 }
+						using = Font_Type_Headers
+						raw_text = "+[Subtract_int32(GetDataModelSize(Location.GetTownRights), '(int32)10')]"
+						align = nobaseline
+						visible = "[GreaterThan_int32(GetDataModelSize(Location.GetTownRights), '(int32)10')]"
+						using = bg_number_container_bckg
+						tooltipwidget = {
+							ContextualTooltipType = {
+								blockoverride "title_text" {
+									text = "TOWN_RIGHTS_TEXT"
+								}
+
+								blockoverride "concept_link" {
+									text = [town_rights|E]
+								}
+
+								blockoverride "title_icon_texture" {
+									texture = "[GetConceptTexture('town_rights')]"
+								}
+
+								blockoverride "tooltip_layout_policy" { }
+
+								blockoverride "tooltip_content" {
+									TooltipListBase = {
+										TooltipScrolledContentSection = {
+											blockoverride "section_content" {
+												vbox = {
+													layoutpolicy_horizontal = expanding
+													spacing = 2
+													datamodel = "[DataModelSkipFirst(Location.GetTownRights, '(int32)10')]"
+													item = {
+														hbox = {
+															layoutpolicy_horizontal = expanding
+															minimumsize = { 180 24 }
+															spacing = 6
+
+															icon = {
+																size = { 22 22 }
+																texture = "[TownRights.GetType.GetIcon]"
+															}
+
+															text_single = {
+																layoutpolicy_horizontal = expanding
+																align = left|nobaseline
+																text = "[TownRights.GetType.GetNameWithNoTooltip]"
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+
+					expand = {}
+				}
+			}
+
+			estate_add_reform_button = {
+				size = { 30 38 }
+				visible = "[And(Location.GetOwner.IsPlayer, Not(Location.GetRank.IsDefault))]"
+				enabled = "[And(ShowGrantLocationTownRights(Location.Self), Not(Location.GetRank.IsDefault))]"
+				blockoverride "estate_add_reform_button" {
+					card_header_button_04 = {
+						size = {100% 100%}
+						action_tooltip = {
+							click_type = left
+							click_mode = single
+							title = "GRANT_NEW_TOWN_RIGHTS"
+							on_action = "[GrantLocationTownRights(Location.Self)]"
+							conditions = "[AddLocalizationIf(Not(Location.GetOwner.IsPlayer), 'TWR_NOT_OTHER_COUNTRY_LOCATIONS')]"
+							conditions = "[AddLocalizationIf(And(Location.GetOwner.IsPlayer, Location.GetRank.IsDefault), 'TWR_ONLY_URBAN_LOCATIONS')]"
+							conditions = "[AddLocalizationIf(And3(Location.GetOwner.IsPlayer, Not(Location.GetRank.IsDefault), Not(ShowGrantLocationTownRights(Location.Self))), 'TWR_NOT_CAPABLE')]"
+							enabled = "[And(ShowGrantLocationTownRights(Location.Self), Not(Location.GetRank.IsDefault))]"
+						}
+
+						tooltipwidget = {
+							BasicFunctionalTooltip = {}
+						}
+					}
+				}
+			}
+		}
+	}
+}

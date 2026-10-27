@@ -1,0 +1,59 @@
+﻿# vanilla: in_game/gui/town_rights.gui
+# mod: in_game/gui/cm_cmf_vanilla_type_updates.gui
+
+template location_town_rights_icon_strip {
+	scroll_list = {
+		blockoverride "scroll_list_layout" {
+			fixedgridbox = {
+				addcolumn = 50
+				addrow = 40
+				datamodel = "[Location.GetTownRights]"
+				flipdirection = yes
+				datamodel_wrap = 10
+				item = {
+					button = {
+						size = { 40 40 }
+
+						tooltipwidget = {
+							using = TownRights_tooltip
+						}
+
+						background = {
+							texture = "gfx/interface/component_tiles/town_rights_paper_background.dds"
+							spriteType = Corneredstretched
+							texture_density = 2
+						}
+
+						icon = {
+							parentanchor = center
+							size = { 34 34 }
+							texture = "[TownRights.GetType.GetIcon]"
+							texture_density = 2
+						}
+
+						action_tooltip = {
+							click_type = left
+							click_mode = confirm
+							visible = "[TownRights.HasUpgradePath]"
+							enabled = "[TownRights.CanUpgrade]"
+							title = "UPGRADE_LOCATION_TOWN_RIGHT"
+							conditions = "[TownRights.GetUpgradeConditions]"
+							cost = "[TownRights.GetUpgradeCost]"
+							on_action = "[TownRights.Upgrade]"
+						}
+
+						action_tooltip = {
+							click_type = right
+							click_mode = confirm
+							enabled = "[TownRights.CanRevoke]"
+							title = "REVOKE_LOCATION_TOWN_RIGHT"
+							conditions = "[TownRights.GetRevokeConditions]"
+							cost = "[TownRights.GetRevokeCost]"
+							on_action = "[TownRights.Revoke]"
+						}
+					}
+				}
+			}
+		}
+	}
+}

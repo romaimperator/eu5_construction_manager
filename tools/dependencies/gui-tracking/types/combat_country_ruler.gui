@@ -1,0 +1,246 @@
+﻿# vanilla: in_game/gui/battle_lateralview.gui
+# mod: in_game/gui/cm_cmf_vanilla_type_updates.gui
+
+	type combat_country_ruler = vbox {
+		layoutpolicy_vertical = expanding
+		spacing = 3
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			block "combat_country_ruler_flag" {
+				# FLAG
+				widget = {
+					size = { 115 76 }
+					datacontext = "[CombatSide.GetCountry]"
+
+					country_flag_mid = {
+						size = { 100% 100% }
+					}
+				}
+			}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = -6
+			block "combat_ruler_rightleft" {
+				righttoleft = yes
+			}
+
+			widget = {
+				size = { 43 81 }
+
+				vbox = {
+					margin = {3 0}
+					spacing = 8
+					visible = "[And(CombatSide.GetCommander.IsValid, CombatSide.GetCommander.ShowsStats)]"
+					datacontext = "[CombatSide.GetCommander]"
+					tagtooltip_enabled = yes
+					tooltip = "[Character.GetAbilityTooltipAsGeneral]"
+					expand = {}
+					hbox = {
+
+						layoutpolicy_horizontal = expanding
+						widget = {
+							size = { 17 17 }
+							using = icon_adm_alt
+						}
+
+						text_single = {
+							visible = "[CombatSide.GetCommander.CanGiveUnitBonus]"
+							layoutpolicy_horizontal = expanding
+							size = { -1 17 }
+							autoresize = no
+							using = abilities_text_props
+							text = "[Character.GetAbility('adm')]"
+							fontsize = 12
+						}
+
+						text_single = {
+							visible = "[Not(CombatSide.GetCommander.CanGiveUnitBonus)]"
+							layoutpolicy_horizontal = expanding
+							size = { 20 17 }
+							text = "[Character.GetAbility('adm')]"
+
+							fontsize = 12
+
+							layoutpolicy_vertical = expanding
+							autoresize = no
+							align = center|nobaseline
+							using = Font_Size_Small
+							default_format = "#S"
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						widget = {
+							size = { 17 17 }
+							using = icon_dip_alt
+						}
+
+						text_single = {
+							visible = "[CombatSide.GetCommander.CanGiveUnitBonus]"
+							layoutpolicy_horizontal = expanding
+							size = { -1 17 }
+							autoresize = no
+							using = abilities_text_props
+							text = "[Character.GetAbility('dip')]"
+							fontsize = 12
+						}
+
+						text_single = {
+							visible = "[Not(CombatSide.GetCommander.CanGiveUnitBonus)]"
+							layoutpolicy_horizontal = expanding
+							size = { 20 17 }
+							text = "[Character.GetAbility('dip')]"
+
+							fontsize = 12
+
+							layoutpolicy_vertical = expanding
+							autoresize = no
+							align = center|nobaseline
+							using = Font_Size_Small
+							default_format = "#S"
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						widget = {
+							size = { 17 17 }
+							using = icon_mil_alt
+						}
+
+						text_single = {
+							visible = "[CombatSide.GetCommander.CanGiveUnitBonus]"
+							layoutpolicy_horizontal = expanding
+							size = { -1 17 }
+							autoresize = no
+							using = abilities_text_props
+							text = "[Character.GetAbility('mil')]"
+							fontsize = 12
+						}
+
+						text_single = {
+							visible = "[Not(CombatSide.GetCommander.CanGiveUnitBonus)]"
+							layoutpolicy_horizontal = expanding
+							size = { 20 17 }
+							text = "[Character.GetAbility('mil')]"
+
+							fontsize = 12
+
+							layoutpolicy_vertical = expanding
+							autoresize = no
+							align = center|nobaseline
+							using = Font_Size_Small
+							default_format = "#S"
+						}
+					}
+
+					expand = {}
+				}
+			}
+
+			# CHARACTER
+			character_frame_medium = {
+				enabled = "[CombatSide.GetCommander.CanGiveUnitBonus]"
+				visible = "[CombatSide.GetCommander.IsValid]"
+				datacontext = "[CombatSide.GetCommander]"
+				blockoverride "character_frame_texture_color" {
+					enabled = "[CombatSide.GetCommander.CanGiveUnitBonus]"
+				}
+				blockoverride "character_frame_size" {
+					size = { 65 81 }
+				}
+				blockoverride "portrait_position" {position = { -5 1 }}
+				blockoverride "portrait_size" { size = { 85% 90% } }
+				blockoverride "character_frame_texture" {
+					texture = "gfx/interface/component_decoration/character_frames/character_non_stretchable_frame_2.dds"
+				}
+				blockoverride "character_portrait_visible" {
+					visible = no
+				}
+
+				blockoverride "character_portrait_ani_visible" {
+					visible = yes
+				}
+				blockoverride "character_portrait_ani_size" {
+					size = { 120% 120% }
+				}
+				blockoverride "character_ribbon" {
+					character_ribbon_1 = {
+						visible = "[Character.HasRebel]"
+						blockoverride "stretchable" {}
+						blockoverride "ribbon color" {
+							modify_texture = {
+								using = color_black_texture
+								blend_mode = overlay
+							}
+						}
+					}
+					character_ribbon_3 = {
+						visible = "[And(Character.IsCivilWarRuler, Not(Character.HasRebel))]"
+						blockoverride "stretchable" {}
+						blockoverride "ribbon color" {
+							modify_texture = {
+								using = color_black_texture
+								blend_mode = overlay
+							}
+						}
+					}
+					character_ribbon_3 = {
+						visible = "[And3(Character.IsRuler, Not(Character.HasRebel), Not(Character.IsCivilWarRuler))]"
+						blockoverride "stretchable" {}
+					}
+				}
+			}
+
+			character_frame_medium = {
+				visible = "[Not(CombatSide.GetCommander.IsValid)]"
+				datacontext = "[CombatSide.GetCommander]"
+				blockoverride "character_frame_size" {
+					size = { 65 81 }
+				}
+				blockoverride "portrait_position" {position = { 0 1 }}
+				blockoverride "portrait_size" { size = { 85% 90% } }
+				blockoverride "character_frame_texture" {
+					texture = "gfx/interface/component_decoration/character_frames/character_non_stretchable_frame_2.dds"
+				}
+				blockoverride "character_portrait_visible" {
+					visible = no
+				}
+
+				blockoverride "character_portrait_ani_visible" {
+					visible = yes
+				}
+				blockoverride "character_ribbon" {
+					character_ribbon_1 = {
+						visible = "[Character.HasRebel]"
+						blockoverride "stretchable" {}
+						blockoverride "ribbon color" {
+							modify_texture = {
+								using = color_black_texture
+								blend_mode = overlay
+							}
+						}
+					}
+					character_ribbon_3 = {
+						visible = "[And(Character.IsCivilWarRuler, Not(Character.HasRebel))]"
+						blockoverride "stretchable" {}
+						blockoverride "ribbon color" {
+							modify_texture = {
+								using = color_black_texture
+								blend_mode = overlay
+							}
+						}
+					}
+					character_ribbon_3 = {
+						visible = "[And3(Character.IsRuler, Not(Character.HasRebel), Not(Character.IsCivilWarRuler))]"
+						blockoverride "stretchable" {}
+					}
+				}
+			}
+		}
+
+		expand = {}
+	}

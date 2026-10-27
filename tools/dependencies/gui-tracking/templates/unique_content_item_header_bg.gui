@@ -1,0 +1,60 @@
+﻿# vanilla: in_game/gui/multiplayer_lobby.gui
+# mod: in_game/gui/cm_cmf_vanilla_type_updates.gui
+
+template unique_content_item_header_bg {
+	using = bg_card_header_01_advances
+	blockoverride "header_advances_extra" {
+		visible = "[UniqueContentItem.IsAdvanceDefinition]"
+	}
+
+	using = bg_card_header_01_government
+	blockoverride "header_government_extra" {
+		visible = "[Or5(
+		UniqueContentItem.IsSituation,
+		UniqueContentItem.IsGovernmentReform,
+		UniqueContentItem.IsEstatePrivilege,
+		UniqueContentItem.IsLaw,
+		UniqueContentItem.IsCabinetAction)]"
+	}
+
+	using = bg_card_header_01_military
+	blockoverride "header_military_extra" {
+		visible = "[Or(UniqueContentItem.IsLevySetup, UniqueContentItem.IsSubUnitDef)]"
+	}
+
+	using = bg_card_header_01_production
+	blockoverride "header_production_extra" {
+		visible = "[UniqueContentItem.IsBuildingType]"
+	}
+
+	using = bg_card_header_01_diplomacy
+	blockoverride "header_diplomacy_extra" {
+		visible = "[Or(Or3(Or5(
+		UniqueContentItem.IsCountryInteraction,
+		UniqueContentItem.IsBureaucracyType,
+		UniqueContentItem.IsCharacterInteraction,
+		UniqueContentItem.IsFormableCountry,
+		UniqueContentItem.IsGenericAction),
+		Or5(
+		UniqueContentItem.IsHeirSelection,
+		UniqueContentItem.IsPolicy,
+		UniqueContentItem.IsSocietalValueType,
+		UniqueContentItem.IsSubjectType,
+		UniqueContentItem.IsTownRightsType),
+		UniqueContentItem.IsReligiousAspect),
+		Or(UniqueContentItem.IsOmen,
+		Or3(
+		UniqueContentItem.IsReligiousOrderType,
+		UniqueContentItem.IsCalling,
+		UniqueContentItem.IsDecision)))]"
+	}
+
+	using = bg_card_header_01_hre
+	blockoverride "bg_header_diplomacy_extra" {
+		visible = "[UniqueContentItem.IsDisasterType]"
+	}
+
+	blockoverride "graphical_culture_pattern_texture" {
+		texture = "[GetGraphicalCultureTexture('header_pattern')]"
+	}
+}

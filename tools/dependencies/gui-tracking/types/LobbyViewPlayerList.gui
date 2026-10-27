@@ -1,0 +1,53 @@
+﻿# vanilla: in_game/gui/multiplayer_lobby.gui
+# mod: in_game/gui/cm_cmf_vanilla_type_updates.gui
+
+	type LobbyViewPlayerList = widget {
+		using = layoutpolicy_expanding
+		alwaystransparent = no
+		visible = "[GameIsMultiplayer]"
+		onmousehierarchyenter = "[PdxGuiWidget.PushMapModeOverride('players')]"
+		onmousehierarchyleave = "[PdxGuiWidget.PopMapModeOverride]"
+
+		vbox = {
+			LobbySubHeader = {
+				blockoverride "text" {
+					text = "JOMINI_MULTIPLAYER_GUI_PLAYER_LIST_LABEL"
+				}
+			}
+
+			scrollbox = {
+				using = layoutpolicy_expanding
+
+				blockoverride "scrollbox_content" {
+					margin_top = 10
+					fixedgridbox = {
+						addcolumn = 400
+						addrow = 52
+						setitemsizefromcell = yes
+
+						datamodel = "[LobbyView.Players]"
+						item = {
+							widget = {
+								JominiLobbyViewPlayerItem = {
+									size = { 97% 50 }
+									parentanchor = left|vcenter
+								}
+							}
+						}
+					}
+				}
+
+				blockoverride "scrollbox_empty" {
+					visible = "[IsDataModelEmpty( LobbyView.Players )]"
+					text = ""
+				}
+
+				blockoverride "scrollbox_expand" {
+					expand = {
+						layoutpolicy_vertical = growing
+						visible = "[DataModelHasItems( LobbyView.Players )]"
+					}
+				}
+			}
+		}
+	}

@@ -1,0 +1,64 @@
+﻿# vanilla: in_game/gui/town_rights.gui
+# mod: in_game/gui/cm_cmf_vanilla_type_updates.gui
+
+template town_rights_type_item {
+	card_header_button_pinned = {
+
+		block "item_size" {
+			size = { 47 43 }
+		}
+
+		tooltipwidget = {
+			using = TownRightsItem_tooltip
+		}
+
+		action_tooltip = {
+			click_type = right
+			click_mode = confirm
+			enabled = "[TownRightsItem.CanRevokeFirst]"
+			title = "REVOKE_TOWN_RIGHTS_FROM"
+			conditions = "[TownRightsItem.GetRevokeFirstConditions]"
+			cost = "[TownRightsItem.GetRevokeFirstCost]"
+			on_action = "[TownRightsItem.RevokeFirst]"
+		}
+
+		action_tooltip = {
+			click_type = left
+			click_mode = confirm
+			visible = "[TownRightsItem.HasUpgradePath]"
+			enabled = "[TownRightsItem.CanUpgradeFirst]"
+			title = "UPGRADE_TOWN_RIGHTS_TO"
+			conditions = "[TownRightsItem.GetUpgradeFirstConditions]"
+			cost = "[TownRightsItem.GetUpgradeCost]"
+			on_action = "[TownRightsItem.UpgradeFirst]"
+		}
+
+		icon = {
+			parentanchor = center
+			size = { 28 28 }
+			texture = "[TownRightsItem.GetType.GetIcon]"
+			texture_density = 2
+		}
+
+		text_single = {
+			visible = "[GreaterThan_int32(TownRightsItem.GetLocationsAmount, '(int32)1')]"
+			using = Font_Size_Small
+			parentanchor = bottom|hcenter
+			widgetanchor = vcenter|hcenter
+			position = { 0 0 }
+			autoresize = yes
+			align = center|nobaseline
+			text = "[TownRightsItem.GetLocationsAmount]"
+
+			background = {
+				texture = "gfx/interface/component_tiles/urban_rights_amount_bg.dds"
+				texture_density = 2
+				spriteType = corneredstretched
+				spriteborder = { 14 14 }
+				margin = { 6 3 }
+				margin_top = 0
+				margin_bottom = 5
+			}
+		}
+	}
+}
