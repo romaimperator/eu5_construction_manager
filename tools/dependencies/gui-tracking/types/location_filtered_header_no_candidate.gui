@@ -13,7 +13,7 @@
 
 		widget = {
 			layoutpolicy_horizontal = expanding
-			size = { -1 55 }
+			size = { -1 60 }
 			block "location_context"
 			{
 				datacontext = "[ProductionView.GetSelectedLocation]"
@@ -25,7 +25,7 @@
 				margin = {2 1}
 
 				widget = {
-					size = { -1 49 }
+					size = { -1 54 }
 					layoutpolicy_horizontal = expanding
 
 					using = bg_building_card_colors
@@ -53,6 +53,25 @@
 
 						datacontext = "[BuildingItem.GetBuildingType]"
 
+						action_tooltip = {
+							click_type = left
+							click_mode = single
+							click_modifier = ctrl
+							title = "BUILDING_IN_LOCATION_ACTION_CTRL"
+							description = "[CanBuildOrExpandBuildingInfo(BuildingItem.GetBuildingType, Location.Self)]"
+							enabled = "[CanBuildOrExpandBuilding(BuildingItem.GetBuildingType, Location.Self)]"
+							on_action = "[BuildOrExpandBuildingCtrl(BuildingItem.GetBuildingType, Location.Self)]"
+						}
+						action_tooltip = {
+							click_type = left
+							click_mode = single
+							click_modifier = shift
+							title = "BUILDING_IN_LOCATION_ACTION_SHIFT"
+							description = "[CanBuildOrExpandBuildingInfo(BuildingItem.GetBuildingType, Location.Self)]"
+							enabled = "[CanBuildOrExpandBuilding(BuildingItem.GetBuildingType, Location.Self)]"
+							on_action = "[BuildOrExpandBuildingShift(BuildingItem.GetBuildingType, Location.Self)]"
+						}
+
 						tooltipwidget = {
 							using = BuildingType_tooltip
 							blockoverride "production_method_simple_good_tooltip" {
@@ -67,28 +86,16 @@
 						hbox = {
 							layoutpolicy_horizontal = expanding
 							layoutpolicy_vertical = expanding
-							spacing = 5
-							margin_right = 10
+							spacing = 6
+							margin_right = 8
 
 							# icon
-							vbox = {
-								layoutpolicy_horizontal = expanding
-								layoutpolicy_vertical = expanding
-								ignoreinvisible = yes
-								margin = {5 0}
-								maximumsize = { 50 -1 }
-
-								# using = bg_cabinet_card_frame
-								blockoverride "market_card_extra" {
-									visible	= no
-								}
-								blockoverride "market_card_frame_extra" {
-									mirror = horizontal
-									margin = {-3 -3}
-								}
+							widget = {
+								size = { 55 30 }
 
 								icon = {
 									size = { 29 29 }
+									parentanchor = center
 									texture = "[GetBuildingIcon(BuildingItem.GetBuildingType.Self)]"
 
 									sort_by_highlight = {
@@ -99,7 +106,7 @@
 
 							text_single = {
 								autoresize = no
-								size = { 160 15 }
+								size = { 140 15 }
 								align = left|nobaseline
 								default_format = "#yellow_titles"
 								text = "[BuildingItem.GetBuildingType.GetNameWithNoTooltip]"
@@ -108,82 +115,18 @@
 
 							expand = {}
 
-							# text_single = {
-							# 	autoresize = no
-							# 	size = {80 25}
-							# 	datacontext = "[BuildingItem.GetBuildingType]"
-							# 	visible = "[BuildingItem.GetBuildingType.IsProducing]"
-							# 	fontsize = 14
-							# 	align = center|nobaseline
-							# 	raw_text = "[GetBuildingTypeTaxBaseInLocation(BuildingItem.GetBuildingType, Location.Self)|+=2]@tax_base!"
-							# 	tooltipwidget = {
-							# 		using = BuildingTypeProfit_Tooltip
-							# 	}
-							# 	sort_by_highlight = {
-							# 		size = { 100% 110% }
-							# 		name = "profit"
-							# 	}
-							# }
-
 							hbox = {
 								margin_right = 3
-								spacing = 5
+								spacing = 6
 
-								widget = { #profit / income
-									size = { 60 36 }
-									vbox = { #built
-										expand = {}
-										visible = "[BuildingItem.GetBuildingType.IsProducing]"
-										tooltipwidget = {
-											using = BuildingTypeProfit_Tooltip
-										}
-
-										text_single = { #profit
-											visible = "[Not(LessThan_CFixedPoint(GetBuildingTypeProfitInLocation(BuildingType.Self, Location.Self), '(CFixedPoint)0'))]"
-											size = { 60 18 }
-											autoresize = no
-											align = nobaseline|right
-											fontsize = 14
-											raw_text = "+[GetBuildingTypeProfitInLocation(BuildingItem.GetBuildingType, Location.Self)|2]@wealth!"
-
-											sort_by_highlight = {
-												size = { 105% 100% }
-												name = "profit"
-											}
-										}
-										text_single = { #profit (unprofitable)
-											visible = "[LessThan_CFixedPoint(GetBuildingTypeProfitInLocation(BuildingType.Self, Location.Self), '(CFixedPoint)0')]"
-											size = { 60 18 }
-											autoresize = no
-											align = nobaseline|right
-											fontsize = 14
-											raw_text = "[GetBuildingTypeProfitInLocation(BuildingItem.GetBuildingType, Location.Self)|2+=]@wealth!"
-
-											sort_by_highlight = {
-												size = { 105% 100% }
-												name = "profit"
-											}
-										}
-
-										text_single = { #income
-											size = { 60 18 }
-											autoresize = no
-											align = nobaseline|right
-											fontsize = 14
-											raw_text = "[GetBuildingTypeIncomeToOwnerInLocation(BuildingItem.GetBuildingType, Location.Self)|+=2]@income!"
-
-											sort_by_highlight = {
-												size = { 105% 100% }
-												name = "income"
-											}
-										}
-									}
+								widget = {
+									size = { 24 24 }
 								}
 
 								widget = { #efficiency
 									datacontext = "[BuildingItem.GetBuildingType]"
 									datacontext = "[Location]"
-									size = { 70 36 }
+									size = { 70 44 } # GlorpUI: vbox stacks ROI under efficiency (1.4 widened 36->44)
 									vbox = {
 										# GlorpUI: stack ROI under the efficiency text
 										layoutpolicy_horizontal = expanding
@@ -243,10 +186,61 @@
 										}
 									}
 								}
+
+								widget = { #profit / income
+									size = { 60 36 }
+									vbox = { #built
+										expand = {}
+										visible = "[BuildingItem.GetBuildingType.IsProducing]"
+										tooltipwidget = {
+											using = BuildingTypeProfit_Tooltip
+										}
+
+										text_single = { #profit
+											visible = "[Not(LessThan_CFixedPoint(GetBuildingTypeProfitInLocation(BuildingType.Self, Location.Self), '(CFixedPoint)0'))]"
+											size = { 60 18 }
+											autoresize = no
+											align = nobaseline|right
+											fontsize = 14
+											raw_text = "+[GetBuildingTypeProfitInLocation(BuildingItem.GetBuildingType, Location.Self)|2]@wealth!"
+
+											sort_by_highlight = {
+												size = { 105% 100% }
+												name = "profit"
+											}
+										}
+										text_single = { #profit (unprofitable)
+											visible = "[LessThan_CFixedPoint(GetBuildingTypeProfitInLocation(BuildingType.Self, Location.Self), '(CFixedPoint)0')]"
+											size = { 60 18 }
+											autoresize = no
+											align = nobaseline|right
+											fontsize = 14
+											raw_text = "[GetBuildingTypeProfitInLocation(BuildingItem.GetBuildingType, Location.Self)|2+=]@wealth!"
+
+											sort_by_highlight = {
+												size = { 105% 100% }
+												name = "profit"
+											}
+										}
+
+										text_single = { #income
+											size = { 60 18 }
+											autoresize = no
+											align = nobaseline|right
+											fontsize = 14
+											raw_text = "[GetBuildingTypeIncomeToOwnerInLocation(BuildingItem.GetBuildingType, Location.Self)|+=2]@income!"
+
+											sort_by_highlight = {
+												size = { 105% 100% }
+												name = "income"
+											}
+										}
+									}
+								}
 							}
 
 							widget = {
-								size = { 140 25 }
+								size = { 110 25 }
 
 								hbox = {
 									layoutpolicy_horizontal = expanding
@@ -274,15 +268,13 @@
 									}
 								}
 							}
-
-
 						}
 					}
 					# GlorpUI: Construction Manager auto-expand button (unbuilt) - overlaid outside the card build button so it can render
 					cm_auto_expand_new_building_button_pl = {
 						ignore_layout = yes
 						parentanchor = right|vcenter
-						position = { -133 0 }
+						position = { -271 0 } # CM: centered on the 1.4 24x24 placeholder slot (was -133 for the 1.3 layout)
 						datacontext = "[BuildingItem.GetBuildingType]"
 					}
 				}

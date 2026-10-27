@@ -98,6 +98,15 @@
 						title = "BUILD_BUILDING_FROM_LOCATION"
 						on_action = "[SelectLocationToBuildDefault(LocationBuildingItem.GetBuilding.GetType)]"
 					}
+					action_tooltip = {
+						click_type = left
+						click_mode = single
+						click_modifier = alt
+						title = "[SelectLocalization(IsAutoExpand(Building.Self), 'TOGGLE_AUTO_EXPAND_ON', 'TOGGLE_AUTO_EXPAND_OFF')]"
+						visible = "[Building.GetType.IsMultipleLevels]"
+						on_action = "[ToggleAutoExpandBuilding(Building.Self)]"
+						description = "[GetAutoExpandBuildingsAutomationWarning]"
+					}
 					enabled = "[LocationBuildingItem.IsPlayerBuilding]"
 
 					tooltipwidget = {
@@ -138,6 +147,15 @@
 							title = "BUILD_BUILDING_FROM_LOCATION"
 							on_action = "[SetUIFocusMarket(Location.GetMarket)]"
 							on_action = "[SelectLocationToBuildDefault(LocationBuildingItem.GetBuilding.GetType)]"
+						}
+						action_tooltip = {
+							click_type = left
+							click_mode = single
+							click_modifier = alt
+							title = "[SelectLocalization(IsAutoExpand(Building.Self), 'TOGGLE_AUTO_EXPAND_ON', 'TOGGLE_AUTO_EXPAND_OFF')]"
+							enabled = "[Building.GetType.IsMultipleLevels]"
+							on_action = "[ToggleAutoExpandBuilding(Building.Self)]"
+							description = "[GetAutoExpandBuildingsAutomationWarning]"
 						}
 
 						tooltipwidget = {
@@ -330,7 +348,7 @@
 					icon = {
 						parentanchor = top|right
 						size = { 12 12 }
-						position = { 1 -1 }
+						position = { 3 0 }
 						# GlorpUI: hidden when Construction Manager is active
 						visible = "[And(IsAutoExpand(LocationBuildingItem.GetBuilding.Self), Not(GetScriptedGui('glorpui_is_cm_active').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))]"
 						datacontext = "[LocationBuildingItem.GetBuilding]"
@@ -396,12 +414,10 @@
 								block "square_icon_out_size_minus" {
 									size = { -1 12 }
 								}
-								datacontext = "[LocationBuildingItem.GetBuilding]"
 								enabled = "[Or(And(Not(LocationBuildingItem.IsBuildingUnderConstruction), LocationBuildingItem.CanDestroy), And(LocationBuildingItem.IsBuildingUnderConstruction, LocationBuildingItem.CanDequeue))]"
 								action_tooltip = {
 									click_mode = confirm
 									click_type = left
-									datacontext = "[Building.GetType]"
 									title = "L_DESTROY_BUILDING_ACTION"
 									visible = "[Not(LocationBuildingItem.IsBuildingUnderConstruction)]"
 									enabled = "[LocationBuildingItem.CanDestroy]"
@@ -428,6 +444,9 @@
 								}
 							}
 						}
+						blockoverride "flag_estate_building_card_flag_visible" {
+							visible = "[And(LocationBuildingItem.GetBuilding.GetType.IsForeign, Not(And3(LocationBuildingItem.IsPlayerBuilding, Or(LocationBuildingItem.GetBuilding.CanPlayerUpgrade, LocationBuildingItem.CanExpandBuilding), Not(LocationBuildingItem.GetBuilding.GetType.OnlyEstatesCanBuild))))]"
+						}
 						blockoverride "flag_estate_building_card_flag_size" {
 							block "tooltip_flag_estate_building_card_flag_size" {
 								size = {19 12}
@@ -453,7 +472,7 @@
 						blockoverride "square_icon_size" {
 							size = {10 10}
 						}
-						visible = "[And3(Not(LocationBuildingItem.GetBuilding.CanPlayerUpgrade), Not(LocationBuildingItem.GetBuilding.GetType.IsForeign), Not(Building.GetType.OnlyEstatesCanBuild))]"
+						visible = "[And3(Not(LocationBuildingItem.GetBuilding.CanPlayerUpgrade), Or(Not(LocationBuildingItem.GetBuilding.GetType.IsForeign), LocationBuildingItem.IsPlayerBuilding), Not(Building.GetType.OnlyEstatesCanBuild))]"
 						datacontext = "[LocationBuildingItem.GetBuilding]"
 						datacontext = "[LocationBuildingItem.GetBuilding.GetType]"
 						datacontext = "[LocationBuildingItem.GetBuilding.GetLocation]"
@@ -491,6 +510,18 @@
 
 							on_action = "[ExpandBuildingShift(LocationBuildingItem.GetBuilding.Self)]"
 						}
+
+						action_tooltip = {
+							click_type = left
+							click_mode = single
+							click_modifier = alt
+
+							title = "BUILDING_IN_LOCATION_ACTION_ALT"
+							description = "[LocationBuildingItem.GetExpandBuildingInfo]"
+							enabled = "[LocationBuildingItem.CanExpandBuilding]"
+
+							on_action = "[ExpandBuildingAlt(LocationBuildingItem.GetBuilding.Self)]"
+						}
 						tooltipwidget = { using = construct_building_in_location_tt }
 					}
 
@@ -503,7 +534,7 @@
 						blockoverride "plusminus_icon" {
 							texture = "gfx/interface/buttons/flats/upgrade_button2.dds"
 						}
-						visible = "[And3(LocationBuildingItem.GetBuilding.CanPlayerUpgrade, Not(LocationBuildingItem.GetBuilding.GetType.IsForeign), Not(LocationBuildingItem.GetBuilding.GetType.OnlyEstatesCanBuild))]"
+						visible = "[And3(LocationBuildingItem.GetBuilding.CanPlayerUpgrade, Or(Not(LocationBuildingItem.GetBuilding.GetType.IsForeign), LocationBuildingItem.IsPlayerBuilding), Not(LocationBuildingItem.GetBuilding.GetType.OnlyEstatesCanBuild))]"
 						datacontext = "[LocationBuildingItem.GetBuilding.GetType.GetNextReplacementBuilding(Player.Self)]"
 						datacontext = "[LocationBuildingItem.GetBuilding.GetLocation]"
 						enabled = "[CanUpgradeToBuilding(BuildingType.Self, Location.Self)]"

@@ -8,6 +8,10 @@ select_menu_left = {
 	}
 
 	blockoverride "close_on_action" { on_action = "[ExpandRawGoodsSelectMarket.OnClose]" }
+	blockoverride "select_header_text" {
+		text = "SELECT_MARKET_HEADER"
+	}
+
 	blockoverride "select_content" {
 		select_menu_header = {
 			blockoverride "select_menu_header_extra" {
