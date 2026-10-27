@@ -1,0 +1,41 @@
+﻿# vanilla: in_game/gui/location_window.gui
+# mod: in_game/gui/location_window.gui
+
+template location_card_town_rights_item_body {
+	using = layoutpolicy_expanding
+
+	action_tooltip = {
+		block "location_card_town_rights_item_action" {}
+		click_type = left
+		click_mode = single
+		title = "GRANT_NEW_TOWN_RIGHTS"
+		on_action = "[GrantLocationTownRights(Location.Self)]"
+		conditions = "[AddLocalizationIf(Not(Location.GetOwner.IsPlayer), 'TWR_NOT_OTHER_COUNTRY_LOCATIONS')]"
+		conditions = "[AddLocalizationIf(And(Location.GetOwner.IsPlayer, Location.GetRank.IsDefault), 'TWR_ONLY_URBAN_LOCATIONS')]"
+		conditions = "[AddLocalizationIf(And3(Location.GetOwner.IsPlayer, Not(Location.GetRank.IsDefault), Not(ShowGrantLocationTownRights(Location.Self))), 'TWR_NOT_CAPABLE')]"
+		enabled = "[And(ShowGrantLocationTownRights(Location.Self), Not(Location.GetRank.IsDefault))]"
+	}
+	action_tooltip = {
+		block "location_card_town_rights_item_action" {}
+		click_type = right
+		click_mode = confirm
+		title = "REVOKE_LOCATION_TOWN_RIGHT"
+		cost = "[Location.GetRevokeFirstTownRightCost]"
+		on_action = "[Location.RevokeFirstTownRight]"
+		conditions = "[AddLocalizationIf(Not(Location.GetOwner.IsPlayer), 'TWR_NOT_OTHER_COUNTRY_LOCATIONS')]"
+		conditions = "[Location.GetRevokeFirstTownRightConditions]"
+		enabled = "[And(Location.GetOwner.IsPlayer, Location.CanRevokeFirstTownRight)]"
+	}
+	tooltipwidget = {
+		using = location_town_rights_tooltip
+	}
+	icon = {
+		block "location_card_town_rights_item_icon_layout" {
+			size = { 24 24 }
+			parentanchor = center
+		}
+		texture = "[TownRights.GetIcon]"
+	}
+	block "location_card_town_rights_item_extra" {}
+	block "location_card_town_rights_item_hover" {}
+}

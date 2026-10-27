@@ -1,0 +1,26 @@
+﻿# vanilla: in_game/gui/location_window.gui
+# mod: in_game/gui/location_window.gui
+
+template location_card_core_integrated {
+	size = { 22 22 }
+	visible = "[And(Location.HasOwner, Or(Location.IsIntegrated, And(Not(Location.GetOwner.IsPlayer), Not(And(Location.IsCurrentlyBeingIntegrated, HasIntegrationIntelOn(Location.Self))))))]"
+
+	# INTEGRATED
+	icon = {
+		size = { 22 22 }
+		parentanchor = center
+		texture = "[GetIntegrationLevelIcon(Location.GetIntegrationLevel)]"
+		alwaystransparent = no
+
+		tooltipwidget = {
+			using = location_core_tooltip
+		}
+
+		glow = {
+			name = "drop_shadow"
+			glow_radius = 3
+			color = {0.0 0.0 0.0 1.0}
+			alpha = 0.3
+		}
+	}
+}

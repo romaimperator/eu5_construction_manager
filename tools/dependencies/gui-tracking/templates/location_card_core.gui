@@ -1,0 +1,76 @@
+﻿# vanilla: in_game/gui/location_window.gui
+# mod: in_game/gui/location_window.gui
+
+template location_card_core {
+	block "location_card_core_size" {
+		size = { 31 31 }
+	}
+	visible = "[And(Location.HasOwner, Or( And(Not(Location.IsOccupied), And(Location.GetOwner.IsPlayer, Not(Location.IsIntegrated))),
+	And(Not(Location.IsOccupied), And(Location.HasOwner, And(Location.IsCurrentlyBeingIntegrated, HasIntegrationIntelOn(Location.Self))))))]"
+
+	# NOT INTEGRATED
+	header_button_left = {
+		visible = "[And(Not(Location.IsOccupied), And(Location.GetOwner.IsPlayer, Not(Location.IsIntegrated)))]"
+		block "location_card_core_size" {
+			size = { 31 31 }
+		}
+		blockoverride "button_icon_stretch_sprite" {}
+		blockoverride "header_button_frame_inner" {visible = no}
+		blockoverride "header_button_icon_size" {
+			block "location_card_core_size" {
+				size = { 31 31 }
+			}
+		}
+		blockoverride "header_button_text_layout" {}
+
+		blockoverride "icon_texture" {
+			texture = "[GetIntegrationLevelIcon(Location.GetIntegrationLevel)]"
+			size = {55% 55%}
+		}
+		action_tooltip = {
+			click_type = left
+			click_mode = single
+			title = "AUTOMATED_SYSTEM_CABINETMEMBERS_CLICK"
+			on_action = "[OpenLateralViewWithParams('government', 'tabcontent = cabinet')]"
+		}
+		tooltipwidget = {
+			using = location_core_tooltip
+		}
+		onclick = "[OpenLateralViewWithParams('government', 'tabcontent = cabinet')]"
+	}
+
+	# BEING INTEGRATED
+	piechart = {
+		using = bg_circle
+		using = bg_circle_piechart
+		using = piechart_angles
+		size = { 22 22 }
+		parentanchor = center
+		visible = "[And(Not(Location.IsOccupied), And(Location.HasOwner, And(Location.IsCurrentlyBeingIntegrated, HasIntegrationIntelOn(Location.Self))))]"
+
+		tooltipwidget = {
+			using = location_core_tooltip
+		}
+
+		pieslice = {
+			texture = "gfx/interface/pie_charts/pie_chart_alpha_80_green.dds"
+			value = "[Location.GetIntegrationProgressFloat]"
+			color = { 1 1 1 1 }
+			alwaystransparent = yes
+		}
+
+		pieslice = {
+			texture = "gfx/interface/pie_charts/pie_chart_alpha_80_red.dds"
+			value = "[Subtract_float('(float)100.0', Location.GetIntegrationProgressFloat)]"
+			color = { 1 1 1 1 }
+			alwaystransparent = yes
+		}
+
+		icon = {
+			size = { 58% 58% }
+			parentanchor = center
+			texture = "[GetIntegrationLevelIcon(Location.GetIntegrationLevel)]"
+			alwaystransparent = yes
+		}
+	}
+}

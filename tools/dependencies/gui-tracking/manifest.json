@@ -14,6 +14,27 @@
       "tracking_path": "tools/dependencies/gui-tracking/templates/build_rgo_entry.gui",
       "vanilla_file": "in_game/gui/expand_raw_goods_lateralview.gui"
     },
+    "template:location_card_core": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/location_window.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_core.gui",
+      "vanilla_file": "in_game/gui/location_window.gui"
+    },
+    "template:location_card_core_integrated": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/location_window.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_core_integrated.gui",
+      "vanilla_file": "in_game/gui/location_window.gui"
+    },
+    "template:location_card_town_rights_item_body": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/location_window.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_town_rights_item_body.gui",
+      "vanilla_file": "in_game/gui/location_window.gui"
+    },
     "template:production_view_poptypes": {
       "base_widget": null,
       "mod_file": "in_game/gui/production_lateralview.gui",
@@ -62,6 +83,13 @@
       "namespace": "GlorpUIFoodProductionTypes",
       "tracking_path": "tools/dependencies/gui-tracking/types/food_production_province.gui",
       "vanilla_file": "in_game/gui/food_production_lateralview.gui"
+    },
+    "type:location_card": {
+      "base_widget": "hbox",
+      "mod_file": "in_game/gui/location_window.gui",
+      "namespace": "LocationWindowTypes",
+      "tracking_path": "tools/dependencies/gui-tracking/types/location_card.gui",
+      "vanilla_file": "in_game/gui/location_window.gui"
     },
     "type:location_filtered_header_no_candidate": {
       "base_widget": "hbox",
