@@ -11,8 +11,6 @@
 		datacontext = "[Building]"
 		visible = "[And(Building.GetType.IsMultipleLevels, Not(GetScriptedGui('cm_is_building_obsolete').IsShown(GuiScope.SetRoot(Building.MakeScope).End)))]"
 		size = { 20 20 }
-		parentanchor = center
-		widgetanchor = center
 		tooltipwidget = { using = cm_Building_Autoexpand_Tooltip }
 		blockoverride "check_texture" {
 			texture = "gfx/interface/icons/flat_icons/mass_upgrade.dds"

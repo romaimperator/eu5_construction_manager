@@ -114,14 +114,8 @@
     },
     "widget:location_view_building_queue": {
       "base_widget": null,
-      "insert_after": [
-        "widget",
-        "location_view_select_province"
-      ],
-      "insert_index": 2,
       "mod_file": "in_game/gui/location_window.gui",
       "namespace": "select_menu_left",
-      "pending_insert": true,
       "tracking_path": "tools/dependencies/gui-tracking/widgets/location_view_building_queue.gui",
       "vanilla_file": "in_game/gui/location_window.gui"
     },
