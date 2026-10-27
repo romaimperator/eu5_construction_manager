@@ -112,6 +112,19 @@
       "tracking_path": "tools/dependencies/gui-tracking/widgets/expand_raw_goods_select_market.gui",
       "vanilla_file": "in_game/gui/expand_raw_goods_lateralview.gui"
     },
+    "widget:location_view_building_queue": {
+      "base_widget": null,
+      "insert_after": [
+        "widget",
+        "location_view_select_province"
+      ],
+      "insert_index": 2,
+      "mod_file": "in_game/gui/location_window.gui",
+      "namespace": "select_menu_left",
+      "pending_insert": true,
+      "tracking_path": "tools/dependencies/gui-tracking/widgets/location_view_building_queue.gui",
+      "vanilla_file": "in_game/gui/location_window.gui"
+    },
     "widget:location_view_select_province": {
       "base_widget": null,
       "mod_file": "in_game/gui/location_window.gui",

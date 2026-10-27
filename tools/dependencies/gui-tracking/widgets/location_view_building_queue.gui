@@ -1,0 +1,212 @@
+﻿# vanilla: in_game/gui/location_window.gui
+# mod: in_game/gui/location_window.gui
+
+select_menu_left = {
+	blockoverride "menu_setup" {
+		name = "location_view_building_queue"
+	}
+
+	blockoverride "select_menu_header_widget" {
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			using = bg_card_header_01_production
+			using = bg_cabinet_card_frame
+			margin = { 20 10 }
+			spacing = 6
+
+			datacontext = "[LocationViewBuildingQueue.Parent.GetLocation]"
+
+			icon = {
+				size = { 28 28 }
+				texture = "[LocationViewBuildingQueue.Parent.GetActiveQueueIcon]"
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				using = Font_Type_Headers
+				align = nobaseline
+				raw_text = "[LocationViewBuildingQueue.Parent.GetActiveQueueTitle]"
+			}
+
+			widget = {
+				size = { 25 25 }
+
+				button_close_alt = {}
+				blockoverride "close_on_action" {
+					on_action = "[LocationViewBuildingQueue.Parent.CloseBuildingQueueMenu]"
+				}
+			}
+		}
+	}
+	
+	blockoverride "select_content" {
+		hbox = {
+			margin = { 4 6 }
+			spacing = 4
+			datacontext = "[LocationViewBuildingQueue.Parent.GetActiveQueueParallelModifier]"
+
+			icon = {
+				size = { 24 24 }
+				texture = "[ModifierType.GetIcon]"
+			}
+
+			text_single = {
+				layoutpolicy_vertical = expanding
+				minimumsize = { 70 -1 }
+				maximumsize = { 320 -1 }
+				using = Font_Type_Headers
+				autoresize = yes
+				align = nobaseline
+				default_format = "#l"
+				text = "LOCATION_BUILDING_QUEUE_PARALLEL"
+				tagtooltip_enabled = yes
+				tooltip = "[LocationViewBuildingQueue.Parent.GetActiveQueueParallelTooltip]"
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 6
+			visible = "[Not(IsDataModelEmpty(LocationViewBuildingQueue.Parent.GetBuildingQueueFixed))]"
+			datamodel = "[LocationViewBuildingQueue.Parent.GetBuildingQueueFixed]"
+			item = {
+				hbox = {
+					minimumsize = { 320 38 }
+					layoutpolicy_horizontal = expanding
+					margin = { 5 0 }
+					spacing = 2
+					datacontext = "[LocationBuildingItem.GetConstruction]"
+
+					widget = { size = { 16 1 } }
+
+					vbox = {
+						spacing = 1
+						button_square_plus = {
+							size = { 18 18 }
+							enabled = no
+							tooltip_enabled = no
+							blockoverride "plusminus_icon" {
+								texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+								mirror = vertical
+							}
+						}
+						button_square_plus = {
+							size = { 18 18 }
+							enabled = no
+							tooltip_enabled = no
+							blockoverride "plusminus_icon" {
+								texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+							}
+						}
+					}
+
+					construction_queue_card = {
+						blockoverride "queue_card_tint" {
+							modify_texture = {
+								texture = "gfx/interface/colors/military.dds"
+								blend_mode = normal
+							}
+						}
+					}
+				}
+			}
+		}
+
+		# Queue list
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 6
+			datamodel = "[LocationViewBuildingQueue.Parent.GetBuildingQueue]"
+			item = {
+				hbox = {
+					using = wood_square_tile
+					using = bg_loans_card_frame
+					using = bg_listbase_template
+
+					background = {
+						using = bg_map_banner_texture
+
+						margin = { -4 -3 }
+		
+						block "queue_card_tint" {
+							modify_texture = {
+								visible = "[Construction.HasConstructionTint]"
+								texture = "[GetConstructionTintTexture(Construction.Self)]"
+								# alpha = 0.8
+								blend_mode = normal
+							}
+
+							modify_texture = {
+								using = color_black_texture
+								blend_mode = multiply
+								alpha = 0.3
+							}
+						}
+		
+						glow = {
+							name = "drop_shadow"
+							glow_radius = 7
+							color = {0.0 0.0 0.0 1.0}
+							alpha = 1
+						}
+					}
+
+					minimumsize = { 320 46 }
+					layoutpolicy_horizontal = expanding
+					margin = { 5 0 }
+					spacing = 2
+					datacontext = "[LocationBuildingItem.GetConstruction]"
+					
+					text_single = {
+						minimumsize = { 16 -1 }
+						align = center|nobaseline
+						default_format = "#subtle_name"
+						raw_text = "[Add_int32(PdxGuiWidget.AccessParent.GetIndexInDataModel, '(int32)1')]"
+					}
+
+					# Up/Down Buttons
+					vbox = {
+						spacing = 1
+						button_square_plus = {
+							size = { 18 18 }
+							enabled = "[LocationViewBuildingQueue.Parent.CanMoveConstructionUp(Construction.Self)]"
+							action_tooltip = {
+								title = "LOCATION_BUILDING_QUEUE_MOVE_UP"
+								on_action = "[LocationViewBuildingQueue.Parent.MoveConstructionUp(Construction.Self)]"
+							}
+							action_tooltip = {
+								click_modifier = shift
+								title = "LOCATION_BUILDING_QUEUE_MOVE_TOP"
+								on_action = "[LocationViewBuildingQueue.Parent.MoveConstructionToTop(Construction.Self)]"
+							}
+							blockoverride "plusminus_icon" {
+								texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+								mirror = vertical
+							}
+							tooltipwidget = { BasicFunctionalTooltip = {} }
+						}
+						button_square_plus = {
+							size = { 18 18 }
+							enabled = "[LocationViewBuildingQueue.Parent.CanMoveConstructionDown(Construction.Self)]"
+							action_tooltip = {
+								title = "LOCATION_BUILDING_QUEUE_MOVE_DOWN"
+								on_action = "[LocationViewBuildingQueue.Parent.MoveConstructionDown(Construction.Self)]"
+							}
+							action_tooltip = {
+								click_modifier = shift
+								title = "LOCATION_BUILDING_QUEUE_MOVE_BOTTOM"
+								on_action = "[LocationViewBuildingQueue.Parent.MoveConstructionToBottom(Construction.Self)]"
+							}
+							blockoverride "plusminus_icon" {
+								texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+							}
+							tooltipwidget = { BasicFunctionalTooltip = {} }
+						}
+					}
+					
+					construction_queue_card = {}
+				}
+			}
+		}
+	}
+}
