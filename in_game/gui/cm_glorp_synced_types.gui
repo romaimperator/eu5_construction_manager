@@ -16,8 +16,7 @@ types glorp_shared_types {
             }
         }
 
-        input_action = "macro_builder"
-        use_global_input_instance = yes
+        # CM: 1.4 removed the macro_builder input action and the use_global_input_instance property
         block "onclick_action" {}
 
         action_tooltip = {
