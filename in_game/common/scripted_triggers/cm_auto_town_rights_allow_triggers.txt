@@ -7,9 +7,35 @@
 # Rights with no `allow` restriction fall through to the trailing trigger_else.
 cm_can_grant_specific_town_right_at_location = {
 	trigger_if = {
+		limit = { scope:cm_town_right = town_rights_type:royal_market_rights }
+		scope:target = {
+			NOR = {
+				has_town_rights = town_rights_type:staple_port
+				has_town_rights = town_rights_type:royal_staple_rights
+				has_town_rights = town_rights_type:free_town_charter
+			}
+		}
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:royal_staple_rights }
+		scope:target = {
+			is_port = yes
+			NOR = {
+				has_town_rights = town_rights_type:market_charter
+				has_town_rights = town_rights_type:royal_market_rights
+				has_town_rights = town_rights_type:free_town_charter
+			}
+		}
+	}
+	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:staple_port }
 		scope:target = {
 			is_port = yes
+			NOR = {
+				has_town_rights = town_rights_type:market_charter
+				has_town_rights = town_rights_type:royal_market_rights
+				has_town_rights = town_rights_type:free_town_charter
+			}
 		}
 	}
 	trigger_else_if = {
@@ -23,6 +49,7 @@ cm_can_grant_specific_town_right_at_location = {
 		scope:target = {
 			NOR = {
 				has_town_rights = town_rights_type:staple_port
+				has_town_rights = town_rights_type:royal_staple_rights
 				has_town_rights = town_rights_type:free_town_charter
 			}
 		}
@@ -32,7 +59,9 @@ cm_can_grant_specific_town_right_at_location = {
 		scope:target = {
 			NOR = {
 				has_town_rights = town_rights_type:market_charter
+				has_town_rights = town_rights_type:royal_market_rights
 				has_town_rights = town_rights_type:staple_port
+				has_town_rights = town_rights_type:royal_staple_rights
 			}
 		}
 	}
@@ -53,6 +82,26 @@ cm_can_grant_specific_town_right_at_location = {
 				has_town_rights = town_rights_type:scandinavian_bergslag_privileges
 				has_town_rights = town_rights_type:upper_bergregal
 				has_town_rights = town_rights_type:lower_bergregal
+				has_town_rights = town_rights_type:novo_brdo_charter
+			}
+		}
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:plantation_charter }
+		is_subject = yes
+		subject_type = subject_type:colonial_nation
+		scope:target = {
+			custom_tooltip = {
+				text = plantation_charter_rgo_tt
+				OR = {
+					raw_material = goods:cotton
+					raw_material = goods:sugar
+					raw_material = goods:tobacco
+					raw_material = goods:saffron
+					raw_material = goods:pepper
+					raw_material = goods:cloves
+					raw_material = goods:chili
+				}
 			}
 		}
 	}
@@ -79,6 +128,10 @@ cm_can_grant_specific_town_right_at_location = {
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:royal_textile_rights }
+		scope:target = { NOT = { has_town_rights = town_rights_type:flemish_cloth_industries_right } }
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:textile_charter }
 		scope:target = { NOT = { has_town_rights = town_rights_type:flemish_cloth_industries_right } }
 	}
 	trigger_else_if = {
@@ -113,6 +166,7 @@ cm_can_grant_specific_town_right_at_location = {
 		limit = { scope:cm_town_right = town_rights_type:scandinavian_bergslag_privileges }
 		scope:target = {
 			NOT = { has_town_rights = town_rights_type:royal_tooling_rights }
+			NOT = { has_town_rights = town_rights_type:mining_charter }
 			OR = {
 				raw_material = goods:iron
 				raw_material = goods:copper
@@ -160,6 +214,7 @@ cm_can_grant_specific_town_right_at_location = {
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:upper_bergregal }
 		scope:target = {
+			NOT = { has_town_rights = town_rights_type:mining_charter }
 			custom_tooltip = {
 				text = upper_bergregal_raw_material_tt
 				OR = {
@@ -177,6 +232,7 @@ cm_can_grant_specific_town_right_at_location = {
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:lower_bergregal }
 		scope:target = {
+			NOT = { has_town_rights = town_rights_type:mining_charter }
 			custom_tooltip = {
 				text = lower_bergregal_raw_material_tt
 				OR = {
@@ -216,6 +272,22 @@ cm_can_grant_specific_town_right_at_location = {
 				has_town_rights = town_rights_type:magdeburg_rights_town_rights
 				has_town_rights = town_rights_type:nuremberg_rights_town_rights
 				has_town_rights = town_rights_type:kulm_town_rights
+			}
+		}
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:novo_brdo_charter }
+		scope:target = {
+			NOT = { has_town_rights = town_rights_type:mining_charter }
+			custom_tooltip = {
+				text = mining_charter_rgo_tt
+				OR = {
+					is_mining_rgo = yes
+					AND = {
+						is_port = no
+						raw_material = goods:salt
+					}
+				}
 			}
 		}
 	}
@@ -335,6 +407,22 @@ cm_can_grant_specific_town_right_at_location = {
 				has_town_rights = town_rights_type:fuero_general_town_rights
 				has_town_rights = town_rights_type:fuero_de_aragon_town_rights
 				has_town_rights = town_rights_type:usatges_de_barcelona_town_rights
+			}
+		}
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:ara_consulate_sea_town_rights }
+		custom_tooltip = {
+			text = consulate_sea_no_province_has_the_town_right
+			NOT = {
+				scope:target = {
+					region = {
+						any_location_in_region = {
+							owner ?= scope:target.owner
+							has_town_rights = town_rights_type:ara_consulate_sea_town_rights
+						}
+					}
+				}
 			}
 		}
 	}

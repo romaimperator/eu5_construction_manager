@@ -18,6 +18,14 @@ cm_auto_town_rights_potential_passes = {
 		limit = { scope:cm_town_right = town_rights_type:scandinavian_thing_rights }
 		has_advance = scandinavian_thing_rights_advance
 	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:royal_market_rights }
+		has_advance = town_rights_enable
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:royal_staple_rights }
+		has_advance = town_rights_enable
+	}
 	# Rights gated by a potential block.
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:royal_free_cities_town_rights }
@@ -29,11 +37,11 @@ cm_auto_town_rights_potential_passes = {
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:swedish_city_rights }
-		tag = SWE
+		has_or_had_tag = SWE
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:norwegian_city_rights }
-		tag = NOR
+		has_or_had_tag = NOR
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:ville_franche_town_rights }
@@ -128,6 +136,7 @@ cm_auto_town_rights_potential_passes = {
 		limit = { scope:cm_town_right = town_rights_type:usatges_de_barcelona_town_rights }
 		OR = {
 			has_or_had_tag = ARA
+			has_or_had_tag = CAT
 			culture = culture:catalan
 		}
 	}
@@ -135,8 +144,17 @@ cm_auto_town_rights_potential_passes = {
 		limit = { scope:cm_town_right = town_rights_type:furs_de_valencia_town_rights }
 		OR = {
 			has_or_had_tag = ARA
+			has_or_had_tag = CAT
 			culture = culture:catalan
 		}
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:ara_consulate_sea_town_rights }
+		modifier:unlocked_consulate_sea_town_right = yes
+	}
+	trigger_else_if = {
+		limit = { scope:cm_town_right = town_rights_type:novo_brdo_charter }
+		has_policy = novo_brdo_mining_law
 	}
 	trigger_else_if = {
 		limit = { scope:cm_town_right = town_rights_type:imperial_breadbasket_rights }
@@ -187,6 +205,6 @@ cm_town_rights_grants_are_free = {
 cm_town_rights_grant_affordable = {
 	OR = {
 		cm_town_rights_grants_are_free = yes
-		government_power >= cm_town_rights_grant_min_required
+		political_influence >= cm_town_rights_grant_min_required
 	}
 }
