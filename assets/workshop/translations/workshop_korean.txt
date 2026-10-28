@@ -3,7 +3,7 @@
 ===WORKSHOP_DESCRIPTION===
 [i]You are on the DeepL-Generated Korean Page. [url=https://steamcommunity.com/sharedfiles/filedetails/?id=$item-id$&l=english]Click here for the Native English Page.[/url][/i]
 
-[img]https://raw.githubusercontent.com/romaimperator/eu5_auto_expand_forked/main/assets/images/cm_banner.png[/img]
+[img]https://raw.githubusercontent.com/romaimperator/eu5_construction_manager/main/assets/images/cm_banner.png[/img]
 [quote]
 [h1]건설 매니저 (Construction Manager)[/h1]
 EU5의 건설 경험을 대폭 개선하기 위해 새로운 자동화 기능, 필터 및 지도 모드를 추가하는 대규모 편의성(QoL) 모드입니다.
@@ -73,4 +73,3 @@ EU5의 건설 경험을 대폭 개선하기 위해 새로운 자동화 기능, �
 [/quote]
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3692202776][img]https://raw.githubusercontent.com/Europa-Universalis-5-Modding-Co-op/community-mod-framework/main/assets/images/cmf/CMF_Member_Banner.png[/img][/url]
-
