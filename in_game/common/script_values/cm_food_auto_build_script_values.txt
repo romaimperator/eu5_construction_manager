@@ -92,9 +92,11 @@ cm_food_base_food = {
 }
 
 # --- Engine modifier helpers ---
-# Engine model: total_food = base_food * R * F, where
+# Engine model: total_food = base_food * R * F * M, where
 #   R = 1 + local_raw_material_output, the RGO output multiplier
 #   F = 1 + local_monthly_food_modifier, the food output multiplier
+#   M = 1 + local_food_production_mult, multiplier applied after all other factors
+#       (urban rank penalties, harsh winters)
 
 # Food output multiplier F.
 cm_food_total_food_mod = {
@@ -112,18 +114,25 @@ cm_food_raw_material_output_mod = {
 	add = modifier:local_raw_material_output
 }
 
+# Food production multiplier M.
+cm_food_production_mult = {
+	value = 1
+	add = modifier:local_food_production_mult
+}
+
 # --- Total food at location ---
-# Returns base_food * R * F.
+# Returns base_food * R * F * M.
 cm_food_location_total = {
 	value = cm_food_base_food
 	multiply = cm_food_raw_material_output_mod
 	multiply = cm_food_one_plus_total_food_mod
+	multiply = cm_food_production_mult
 }
 
 # --- Marginal food per added unit: 1 building level or 1 RGO expansion ---
-# delta = food_new - food_old. Each option's effect on B, R, or F is captured below.
+# delta = food_new - food_old. Each option's effect on B, R, or F is captured below; M scales every option.
 
-# RGO expansion: delta B = food_value * [1 + per_good_output_mod]. delta food = delta B * R * F.
+# RGO expansion: delta B = food_value * [1 + per_good_output_mod]. delta food = delta B * R * F * M.
 cm_food_marginal_rgo = {
 	value = cm_food_value_of_rgo
 	multiply = {
@@ -132,10 +141,11 @@ cm_food_marginal_rgo = {
 	}
 	multiply = cm_food_raw_material_output_mod
 	multiply = cm_food_one_plus_total_food_mod
+	multiply = cm_food_production_mult
 }
 
 # Farming Village: delta B = +0.5 * livestock.food_value, delta R = +0.025 to local_raw_material_output, delta F = 0.
-# delta food = [B + delta_B] * [R + 0.025] * F - B * R * F.
+# delta food = [B + delta_B] * [R + 0.025] * F * M - B * R * F * M.
 cm_food_marginal_farming_village = {
 	value = cm_food_base_food
 	add = {
@@ -147,42 +157,47 @@ cm_food_marginal_farming_village = {
 		add = 0.025
 	}
 	multiply = cm_food_one_plus_total_food_mod
+	multiply = cm_food_production_mult
 	subtract = cm_food_location_total
 }
 
 # Windmill: delta per_good_output_mod = +0.1 when the location's RGO good is wheat, rice, or millet.
-# delta food = N * food_value * 0.1 * R * F.
+# delta food = N * food_value * 0.1 * R * F * M.
 cm_food_marginal_windmill = {
 	value = 0.1
 	multiply = cm_modifier_rgo_level
 	multiply = cm_food_value_of_rgo
 	multiply = cm_food_raw_material_output_mod
 	multiply = cm_food_one_plus_total_food_mod
+	multiply = cm_food_production_mult
 }
 
 # Irrigation: delta F = +0.05 to local_monthly_food_modifier.
-# delta food = B * R * 0.05.
+# delta food = B * R * 0.05 * M.
 cm_food_marginal_irrigation = {
 	value = cm_food_base_food
 	multiply = cm_food_raw_material_output_mod
 	multiply = 0.05
+	multiply = cm_food_production_mult
 }
 
-# Fishing Village: delta B = +0.5 * fish.food_value. delta food = delta_B * R * F.
+# Fishing Village: delta B = +0.5 * fish.food_value. delta food = delta_B * R * F * M.
 cm_food_marginal_fishing_village = {
 	value = 0.5
 	goods:fish = { multiply = food_value }
 	multiply = cm_food_raw_material_output_mod
 	multiply = cm_food_one_plus_total_food_mod
+	multiply = cm_food_production_mult
 }
 
-# Forest Village: delta B = +0.2 * wild_game.food_value + 1.0 local_monthly_food. delta food = delta_B * R * F.
+# Forest Village: delta B = +0.2 * wild_game.food_value + 1.0 local_monthly_food. delta food = delta_B * R * F * M.
 cm_food_marginal_forest_village = {
 	value = 0.2
 	goods:wild_game = { multiply = food_value }
 	add = 1.0
 	multiply = cm_food_raw_material_output_mod
 	multiply = cm_food_one_plus_total_food_mod
+	multiply = cm_food_production_mult
 }
 
 # --- Building cost helpers ---
@@ -277,4 +292,3 @@ cm_food_pop_pool_after_rgo_buildout = {
 	add = cm_modifier_rgo_level
 	add = cm_get_rgos_under_construction
 }
-

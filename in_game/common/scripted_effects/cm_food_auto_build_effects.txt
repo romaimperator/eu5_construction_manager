@@ -143,6 +143,8 @@ cm_update_food_data_columns = {
 	set_variable = { name = cm_food_col_11 value = 0 }
 	set_variable = { name = cm_food_col_12 value = 0 }
 	set_variable = { name = cm_food_col_13 value = 0 }
+	set_variable = { name = cm_food_col_14 value = 0 }
+	set_variable = { name = cm_food_col_15 value = 0 }
 
 	# Single pass: accumulate food by RGO type
 	every_owned_location = {
@@ -188,6 +190,12 @@ cm_update_food_data_columns = {
 			else_if = { limit = { scope:cm_food_loc = { raw_material = goods:fur } }
 				change_variable = { name = cm_food_col_13 add = scope:cm_food_loc.cm_food_location_total }
 			}
+			else_if = { limit = { scope:cm_food_loc = { raw_material = goods:wool } }
+				change_variable = { name = cm_food_col_14 add = scope:cm_food_loc.cm_food_location_total }
+			}
+			else_if = { limit = { scope:cm_food_loc = { raw_material = goods:horses } }
+				change_variable = { name = cm_food_col_15 add = scope:cm_food_loc.cm_food_location_total }
+			}
 		}
 	}
 
@@ -205,6 +213,8 @@ cm_update_food_data_columns = {
 	round_variable = { name = cm_food_col_11 nearest = 1 }
 	round_variable = { name = cm_food_col_12 nearest = 1 }
 	round_variable = { name = cm_food_col_13 nearest = 1 }
+	round_variable = { name = cm_food_col_14 nearest = 1 }
+	round_variable = { name = cm_food_col_15 nearest = 1 }
 
 	# Write totals to CMM data columns
 	cmm_set_list_data_value = { mod_id = cm setting_id = auto_food_list field_id = food_amount item = 1 value = var:cm_food_col_1 }
@@ -220,6 +230,8 @@ cm_update_food_data_columns = {
 	cmm_set_list_data_value = { mod_id = cm setting_id = auto_food_list field_id = food_amount item = 11 value = var:cm_food_col_11 }
 	cmm_set_list_data_value = { mod_id = cm setting_id = auto_food_list field_id = food_amount item = 12 value = var:cm_food_col_12 }
 	cmm_set_list_data_value = { mod_id = cm setting_id = auto_food_list field_id = food_amount item = 13 value = var:cm_food_col_13 }
+	cmm_set_list_data_value = { mod_id = cm setting_id = auto_food_list field_id = food_amount item = 14 value = var:cm_food_col_14 }
+	cmm_set_list_data_value = { mod_id = cm setting_id = auto_food_list field_id = food_amount item = 15 value = var:cm_food_col_15 }
 
 	# Suppress "set but never used" warnings for accumulators referenced via text substitution.
 	if = { limit = { always = no }
@@ -236,5 +248,7 @@ cm_update_food_data_columns = {
 		cmf_suppress = { v = cm_food_col_11 }
 		cmf_suppress = { v = cm_food_col_12 }
 		cmf_suppress = { v = cm_food_col_13 }
+		cmf_suppress = { v = cm_food_col_14 }
+		cmf_suppress = { v = cm_food_col_15 }
 	}
 }

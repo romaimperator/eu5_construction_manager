@@ -1,11 +1,14 @@
 ﻿# Construction demand totals using per-good global variable maps.
 # These maps are populated by the hidden window GUI for all building types.
-# The 28 construction goods below are a stable game constant.
+# The 29 construction goods below are a stable game constant.
 # Expects scopes: building_type
 cm_get_construction_demand_total = {
   value = 0
   if = { limit = { AND = { has_global_variable_map = cm_construction_demand_books is_key_in_global_variable_map = { name = cm_construction_demand_books target = scope:cm_building_type } } }
     add = "global_variable_map(cm_construction_demand_books|scope:cm_building_type)"
+  }
+  if = { limit = { AND = { has_global_variable_map = cm_construction_demand_camels is_key_in_global_variable_map = { name = cm_construction_demand_camels target = scope:cm_building_type } } }
+    add = "global_variable_map(cm_construction_demand_camels|scope:cm_building_type)"
   }
   if = { limit = { AND = { has_global_variable_map = cm_construction_demand_clay is_key_in_global_variable_map = { name = cm_construction_demand_clay target = scope:cm_building_type } } }
     add = "global_variable_map(cm_construction_demand_clay|scope:cm_building_type)"
@@ -117,6 +120,7 @@ cm_get_standard_construction_demand_total = {
 cm_get_construction_demand_total_count = {
   value = 0
   if = { limit = { AND = { has_global_variable_map = cm_construction_demand_books is_key_in_global_variable_map = { name = cm_construction_demand_books target = scope:cm_building_type } } } add = 1 }
+  if = { limit = { AND = { has_global_variable_map = cm_construction_demand_camels is_key_in_global_variable_map = { name = cm_construction_demand_camels target = scope:cm_building_type } } } add = 1 }
   if = { limit = { AND = { has_global_variable_map = cm_construction_demand_clay is_key_in_global_variable_map = { name = cm_construction_demand_clay target = scope:cm_building_type } } } add = 1 }
   if = { limit = { AND = { has_global_variable_map = cm_construction_demand_cloth is_key_in_global_variable_map = { name = cm_construction_demand_cloth target = scope:cm_building_type } } } add = 1 }
   if = { limit = { AND = { has_global_variable_map = cm_construction_demand_copper is_key_in_global_variable_map = { name = cm_construction_demand_copper target = scope:cm_building_type } } } add = 1 }

@@ -104,6 +104,8 @@
  cm__auto_food_list_i11_name: "@wild_game! [ShowGoodsName('wild_game')] (@food! 3.5)"
  cm__auto_food_list_i12_name: "@beeswax! [ShowGoodsName('beeswax')] (@food! 2.5)"
  cm__auto_food_list_i13_name: "@fur! [ShowGoodsName('fur')] (@food! 2)"
+ cm__auto_food_list_i14_name: "@wool! [ShowGoodsName('wool')] (@food! 3)"
+ cm__auto_food_list_i15_name: "@horses! [ShowGoodsName('horses')] (@food! 2)"
  cm__auto_food_list__enabled_name: "Включено"
  cm__auto_food_list__enabled_desc: "Переключить автоматическое строительство для этого типа пищевых РГО. Пока этот режим включен, соответствующие сельские локации не будут преобразованы в города функцией Автоурбанизации."
  cm__auto_food_list__river_only_name: "Только на реках"

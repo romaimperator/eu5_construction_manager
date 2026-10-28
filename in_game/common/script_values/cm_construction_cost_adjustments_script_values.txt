@@ -23,7 +23,7 @@ cm_get_min_discount_for_auto_build_capital = { value = "scope:cm_country.variabl
 
 # Cost modifier calculation using per-good construction demand maps.
 # These maps are populated by the hidden window GUI for all building types.
-# The 28 construction goods below are a stable game constant.
+# The 29 construction goods below are a stable game constant.
 #
 # Algorithm: for each construction good, clamp the raw price adjustment to the engine's
 # [MIN_PRICE_IMPACT, MAX_PRICE_IMPACT] = [-0.33, 3.0] range, then weight by demand share,
@@ -39,6 +39,16 @@ cm_get_construction_cost_modifier_for_building_type = {
       min = "define:NMarket|MIN_PRICE_IMPACT"
       max = "define:NMarket|MAX_PRICE_IMPACT"
       multiply = "global_variable_map(cm_construction_demand_books|scope:cm_building_type)"
+      divide = cm_get_construction_demand_total
+    }
+  }
+  if = { limit = { AND = { has_global_variable_map = cm_construction_demand_camels is_key_in_global_variable_map = { name = cm_construction_demand_camels target = scope:cm_building_type } } }
+    add = {
+      goods:camels = { save_temporary_scope_as = cm_good }
+      value = glorpui_construction_good_adjustment
+      min = "define:NMarket|MIN_PRICE_IMPACT"
+      max = "define:NMarket|MAX_PRICE_IMPACT"
+      multiply = "global_variable_map(cm_construction_demand_camels|scope:cm_building_type)"
       divide = cm_get_construction_demand_total
     }
   }

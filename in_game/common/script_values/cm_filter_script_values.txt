@@ -76,6 +76,8 @@ cm_location_food_potential_food_multiplier = {
 	else_if = { limit = { raw_material ?= goods:wild_game } add = modifier:local_wild_game_output_modifier }
 	else_if = { limit = { raw_material ?= goods:fur } add = modifier:local_fur_output_modifier }
 	else_if = { limit = { raw_material ?= goods:beeswax } add = modifier:local_beeswax_output_modifier }
+	else_if = { limit = { raw_material ?= goods:wool } add = modifier:local_wool_output_modifier }
+	else_if = { limit = { raw_material ?= goods:horses } add = modifier:local_horses_output_modifier }
 	subtract = {
 		value = development
 		multiply = 0.01  # vanilla 1%/dev

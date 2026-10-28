@@ -118,10 +118,10 @@ cm_food_can_build_irrigation = {
 }
 
 # Option 5: +1 Fishing Village level
-# Requires: coastal, rural, not at max level, not already under construction
+# Requires: coastal or river, rural, not at max level, not already under construction
 cm_food_can_build_fishing_village = {
 	AND = {
-		is_coastal = yes
+		OR = { is_coastal = yes has_river = yes }
 		location_rank = location_rank:rural_settlement
 		cm_food_location_buildable_for_building_type = { target = building_type:fishing_village }
 		cm_check_location_has_peasants_available_or_will_be = yes

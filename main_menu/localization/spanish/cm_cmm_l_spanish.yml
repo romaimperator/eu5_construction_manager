@@ -107,6 +107,8 @@
  cm__auto_food_list_i11_name: "@wild_game! [ShowGoodsName('wild_game')] (@food! 3.5)"
  cm__auto_food_list_i12_name: "@beeswax! [ShowGoodsName('beeswax')] (@food! 2.5)"
  cm__auto_food_list_i13_name: "@fur! [ShowGoodsName('fur')] (@food! 2)"
+ cm__auto_food_list_i14_name: "@wool! [ShowGoodsName('wool')] (@food! 3)"
+ cm__auto_food_list_i15_name: "@horses! [ShowGoodsName('horses')] (@food! 2)"
  cm__auto_food_list__enabled_name: "Activado"
  cm__auto_food_list__enabled_desc: "Alternar la construcción automática para este tipo de RGO de alimentos. Mientras esté activada, las localizaciones rurales correspondientes no serán ascendidas a ciudades por la Urbanización Automática."
  cm__auto_food_list__river_only_name: "Solo en ríos"
