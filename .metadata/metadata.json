@@ -1,10 +1,10 @@
 {
     "name": "Construction Manager Dev",
     "id": "romaimperator.construction_manager.dev",
-    "version": "2.3.0",
+    "version": "2.2.13",
     "game_id": "eu5",
     "supported_game_version": "1.4.*",
-    "cm_last_updated_game_version": "1.4.4",
+    "cm_last_updated_game_version": "1.4.5",
     "short_description": "Adds new automations, filters, and map modes, to better manage EU5 construction.",
     "tags": [
         "Utilities",
