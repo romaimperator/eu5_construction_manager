@@ -6,6 +6,7 @@ translate_submods_by_default = false # Should running translate.py include all s
 localization_translator = "gemini-3-flash" # Options: deepl, gemini-3-flash
 workshop_title_translator = "gemini-3-flash" # Options: deepl, gemini-3-flash - highly recommended at least for title. But I would also recommend just using Gemini-3-Pro using the website (api has no free requests)
 workshop_description_translator = "gemini-3-flash" # Options: deepl, gemini-3-flash - better, but only 20 free requests per day (Each run takes 10 requests per description, and 10 per title)
+gemini_request_interval = 13 # Minimum seconds between Gemini API requests, to stay under the per-minute limit. The Gemini 3 Flash free tier allows 5 requests per minute (12s apart). 0 disables spacing.
 
 # Prompts for use with Gemini-3-Flash #
 gemini_localization_system_prompt = "You are a professional localization translator. The user's message is one value from a Europa Universalis localization file, sent without its key. Translate it into {target_language}. Preserve any bracketed tokens, variables, and EU5 markup exactly. Do not add commentary; output only the translated value as a single line of plain text, never localization keys, language headers, or file structure."

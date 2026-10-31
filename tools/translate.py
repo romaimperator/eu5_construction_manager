@@ -128,7 +128,7 @@ def _parse_positive_int(value, label):
 
 def load_config(config_path):
 	"""Load config.toml and validate required keys and values."""
-	invalid = (None,) * 13
+	invalid = (None,) * 14
 
 	if not os.path.exists(config_path):
 		print(f"Error: Config file not found: {config_path}")
@@ -250,6 +250,11 @@ def load_config(config_path):
 		return invalid
 	workshop_name = workshop_name.strip() or None
 
+	gemini_request_interval = data.get("gemini_request_interval", 0)
+	if isinstance(gemini_request_interval, bool) or not isinstance(gemini_request_interval, (int, float)) or gemini_request_interval < 0:
+		print("Error: gemini_request_interval must be a number of seconds, 0 or greater.")
+		return invalid
+
 	# Defer validation — only required when workshop pages are actually translated.
 	workshop_item_id = None
 	raw_item_id = data.get("workshop_upload_item_id")
@@ -269,7 +274,8 @@ def load_config(config_path):
 		gemini_title_system_prompt,
 		gemini_additional_context,
 		workshop_item_id,
-		workshop_name
+		workshop_name,
+		float(gemini_request_interval)
 	)
 
 def parse_args():
@@ -383,6 +389,20 @@ def get_file_language_hashes(cache_bucket):
 		file_languages = {}
 		cache_bucket["file_languages"] = file_languages
 	return file_languages
+
+def cache_path_key(rel_path):
+	"""Cache key for a source file path; always '/'-separated so the cache matches on every OS."""
+	return rel_path.replace("\\", "/")
+
+def normalize_cache_path_keys(path_map):
+	"""Rewrite '\\'-separated keys written by older runs on Windows. Returns True if any key changed."""
+	changed = False
+	for path in list(path_map.keys()):
+		normalized = cache_path_key(path)
+		if normalized != path:
+			path_map.setdefault(normalized, path_map.pop(path))
+			changed = True
+	return changed
 
 def get_translator():
 	"""Create a DeepL Translator instance."""
@@ -1361,6 +1381,52 @@ def _build_gemini_system_prompt(template, target_language, additional_context=""
 		prompt += "\n\nAdditional context: " + additional_context
 	return prompt
 
+class GeminiQuotaExhausted(Exception):
+	"""Gemini reported a used-up daily quota; every later request this run would fail too."""
+
+# Spacing between Gemini requests; the interval is set from config.toml in main().
+_gemini_pacing = {"interval": 0.0, "last_request": None, "announced": False}
+
+def _wait_for_gemini_slot():
+	"""Sleep until the configured interval has passed since the previous Gemini request."""
+	last_request = _gemini_pacing["last_request"]
+	if last_request is not None:
+		remaining = last_request + _gemini_pacing["interval"] - time.monotonic()
+		if remaining > 0:
+			if not _gemini_pacing["announced"]:
+				print(f"  Spacing Gemini requests {_gemini_pacing['interval']:g}s apart (gemini_request_interval in config.toml).")
+				_gemini_pacing["announced"] = True
+			time.sleep(remaining)
+	_gemini_pacing["last_request"] = time.monotonic()
+
+def _parse_gemini_quota_error(body):
+	"""
+	Read a Gemini 429 error body.
+	Returns (suggested retry delay in seconds or None, whether a daily quota was hit).
+	"""
+	try:
+		details = json.loads(body)["error"]["details"]
+	except (ValueError, KeyError, TypeError):
+		return None, False
+	if not isinstance(details, list):
+		return None, False
+
+	retry_delay = None
+	daily_quota = False
+	for detail in details:
+		if not isinstance(detail, dict):
+			continue
+		detail_type = str(detail.get("@type", ""))
+		if detail_type.endswith("google.rpc.RetryInfo"):
+			match = re.fullmatch(r"(\d+(?:\.\d+)?)s", str(detail.get("retryDelay", "")))
+			if match:
+				retry_delay = float(match.group(1))
+		elif detail_type.endswith("google.rpc.QuotaFailure"):
+			for violation in detail.get("violations") or []:
+				if isinstance(violation, dict) and "PerDay" in str(violation.get("quotaId", "")):
+					daily_quota = True
+	return retry_delay, daily_quota
+
 def _gemini_generate_content(payload):
 	"""Call the Gemini generateContent API with retries."""
 	if not GEMINI_API_KEY:
@@ -1384,16 +1450,24 @@ def _gemini_generate_content(payload):
 			method="POST"
 		)
 
+		_wait_for_gemini_slot()
 		try:
 			with urllib.request.urlopen(request, timeout=60) as response:
 				raw = response.read().decode("utf-8")
 			return json.loads(raw)
 		except urllib.error.HTTPError as e:
 			body = e.read().decode("utf-8", errors="ignore")
+			delay = base_delay * (2 ** (attempt - 1))
+			if e.code == 429:
+				retry_delay, daily_quota = _parse_gemini_quota_error(body)
+				if daily_quota:
+					raise GeminiQuotaExhausted(body) from None
+				if retry_delay is not None:
+					# Wait as long as Gemini asks so the retry lands after the per-minute window resets.
+					delay = max(delay, retry_delay)
 			retryable = e.code in (429, 500, 502, 503, 504)
 			if retryable and attempt < max_attempts:
-				delay = base_delay * (2 ** (attempt - 1))
-				print(f"  [Warning] Gemini API request failed ({e.code}) on attempt {attempt}/{max_attempts}. Retrying in {delay}s...")
+				print(f"  [Warning] Gemini API request failed ({e.code}) on attempt {attempt}/{max_attempts}. Retrying in {delay:g}s...")
 				time.sleep(delay)
 				continue
 			print(f"  [Error] Gemini API request failed ({e.code}): {body}")
@@ -1724,10 +1798,12 @@ def main():
 		gemini_title_system_prompt,
 		gemini_additional_context,
 		workshop_item_id,
-		workshop_name
+		workshop_name,
+		gemini_request_interval
 	) = load_config(CONFIG_PATH)
 	if not source_language:
 		return
+	_gemini_pacing["interval"] = gemini_request_interval
 
 	source_lang_id = LANGUAGE_CONFIG[source_language]["loc_id"]
 	source_lang_deepl = LANGUAGE_CONFIG[source_language]["deepl"]
@@ -1769,6 +1845,10 @@ def main():
 		cache_bucket = get_cache_bucket(hash_data, cache_key)
 		file_hashes = cache_bucket["files"]
 		file_languages = get_file_language_hashes(cache_bucket)
+		# Caches written on Windows use '\\' separators; migrate them so lookups match on every OS.
+		for path_map in (file_hashes, file_languages):
+			if normalize_cache_path_keys(path_map):
+				hashes_modified = True
 		processed_files = set()
 
 		if translate_mod:
@@ -1788,7 +1868,7 @@ def main():
 						for entry in source_entries:
 							source_hashes[entry["key"]] = hash_text(entry["value"])
 
-						source_rel_path = os.path.relpath(source_filepath, loc_base_path)
+						source_rel_path = cache_path_key(os.path.relpath(source_filepath, loc_base_path))
 						processed_files.add(source_rel_path)
 						source_file_hash = hash_text("".join(source_lines))
 
@@ -1901,4 +1981,9 @@ def main():
 	print("Translation complete!")
 
 if __name__ == "__main__":
-	main()
+	try:
+		main()
+	except GeminiQuotaExhausted as e:
+		print(f"  [Error] Gemini daily quota used up: {e}")
+		print("Stopping. Languages that finished are saved; run translate.py again after the quota resets to continue.")
+		sys.exit(1)
