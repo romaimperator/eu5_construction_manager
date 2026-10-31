@@ -1,6 +1,38 @@
 {
+  "file_languages": {
+    "english/cm_cmm_l_english.yml": {
+      "polish": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
+      "russian": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
+      "simp_chinese": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
+      "spanish": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea"
+    },
+    "english/cm_filters_l_english.yml": {
+      "braz_por": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "french": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "german": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "japanese": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "korean": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "polish": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "russian": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "simp_chinese": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "spanish": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
+      "turkish": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb"
+    },
+    "english/glorpui_shared_l_english.yml": {
+      "braz_por": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "french": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "german": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "japanese": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "korean": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "polish": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "russian": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "simp_chinese": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "spanish": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc",
+      "turkish": "89218e23b2e991e85ae0274b2065a9f84b66770802be8b540f90272d7cbb35dc"
+    }
+  },
   "files": {
-    "english\\cm_cmm_l_english.yml": {
+    "english/cm_cmm_l_english.yml": {
       "CM_AUTOMATION_TOGGLE": "a1afd9cf02f4b2649f239b2cb51b290aa9ca4d77f102afe3d831c7508495e154",
       "cm": "b5039c325d7107d60895787cd759095631d3fe594913e6ff284434b254a46b4c",
       "cm__allowed_building_overbuild_levels": "28798b055706107d16b12b337f720d75231c7860fbde3889bc66d54a78cef263",
@@ -245,7 +277,7 @@
       "cm_desc": "383839d48c76d104fb550e813a2aedfeb1849e63137f544ec899410884939d75",
       "cm_name": "de9f708c8440a76add4f507972fcfccd7f1cf48b2158ced46d831719e4353d92"
     },
-    "english\\cm_filters_l_english.yml": {
+    "english/cm_filters_l_english.yml": {
       "search_filter_building_only_auto_expand_desc": "45150be53eda20d1091ad03c18ce319ca83021872fb6fd1fc7dc19069fb45abf",
       "search_filter_building_only_auto_expand_name": "4d71e2cb03b10591c2e63edec4248ce8e71c3d0195644968139c396c8e8e8d2b",
       "search_filter_building_only_not_auto_expand_desc": "5556960fc93513600eab12e3b7cd3e20a258e2ee9f3563e12e182fceba6457e1",
@@ -284,7 +316,7 @@
       "search_filter_location_not_has_auto_expand_rgo_desc": "7e20fffe73396ba23c7d32d8fa6c697053a72f8568772e4d7dcfb1a09d859da0",
       "search_filter_location_not_has_auto_expand_rgo_name": "1afeb628b792bfdb666270d57c80cc06817f5ad6d75cab49ac0497be4fd44f0c"
     },
-    "english\\cm_localization_l_english.yml": {
+    "english/cm_localization_l_english.yml": {
       "AUTO_MODIFIER_DESC_cm_city_upgrade_price_parity": "b8d1e10b5d9cb1c63810346faf429977a2db0123a32da5618fb48c1a8bd1bba5",
       "AUTO_MODIFIER_DESC_cm_town_upgrade_price_parity": "1e97e07fa86ebb2030ee5863d8e168ecb2b847628b2c7d738d4bb8159b079418",
       "AUTO_MODIFIER_NAME_cm_city_upgrade_price_parity": "488af2ea58e39b4a32962239b6b3bceced030bb829bdcb859298a1daf7c56b12",
@@ -404,7 +436,7 @@
       "cm_upgrade_town_to_city_building_desc": "f0da0de5a0ef3b0fb1f475d8a51ea6966563a5c59a810601f7e9ebea3ad184ae",
       "cm_upgrade_town_to_city_maintenance": "34e5ac3e77412f04193a2dd9a8e4ef825ad17a76c595b2b08b329edc8af80e44"
     },
-    "english\\cm_map_modes_l_english.yml": {
+    "english/cm_map_modes_l_english.yml": {
       "MAPMODE_CM_BREADBASKET": "ad00a0a1c810a031aac15f1c80ab82bcd1ab660eec29af410a17fd668d20a692",
       "MAPMODE_CM_BREADBASKET_TT_ENABLED": "518798631dcbd16cbafc9619ed5f634b645cfd9900c485fcdf3a9f85c350f229",
       "MAPMODE_CM_BREADBASKET_TT_FOREIGN": "f623ab3da4847d068d505955505a4dc48e8cd2566460a087026a75441c448c78",
@@ -430,7 +462,7 @@
       "mapmode_cm_location_food_potential_hidden_name": "e547f627328c17ea7d8281aedfa69227f50b2bb11763fa3460842b8ef1aae669",
       "mapmode_cm_location_food_potential_name": "3cab67d223ab2c03739a6625ba050d9865fa6064fcc70bdf37b022c35b6b0306"
     },
-    "english\\glorpui_shared_l_english.yml": {
+    "english/glorpui_shared_l_english.yml": {
       "GLORP_UI_BL_BT_ROI_MONTHS_VALUE": "7658b28ca7af07ee06643bb4d2a27783ab27f55825159233424bea34518090c0",
       "GLORP_UI_BL_BT_ROI_YEARS_VALUE": "23c9199b03245919bd96e447d250d1c8df52976d603378b900252e11403dd8cd",
       "GLORP_UI_BL_ROI_MONTHS_VALUE": "2807770ee103b49831b8b8d6b964b0348fb46a3391b2eb6de2eb10bbea00e2fe",
