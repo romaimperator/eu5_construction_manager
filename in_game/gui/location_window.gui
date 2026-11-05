@@ -599,6 +599,12 @@
 
 							blockoverride "location_card_town_rights_slot" {}
 
+							blockoverride "location_card_town_rights_vertical_slot" {
+								widget = {
+									using = location_card_town_rights_vertical
+								}
+							}
+
 							blockoverride "location_card_core_icon_size" {
 								size = { 28 28 }
 							}
@@ -8321,10 +8327,8 @@ types LocationWindowTypes {
 						}
 					}
 				}
-
-				widget = {
-					using = location_card_town_rights
-				}
+	
+				block "location_card_town_rights_vertical_slot" {}
 			}
 
 			vbox = {
@@ -8616,7 +8620,7 @@ types LocationWindowTypes {
 							# layoutpolicy_horizontal = expanding
 							# size = { -1 28 }
 
-							size = { 90 28 }
+							size = { 70 28 }
 
 							action_tooltip = {
 								click_type = left
@@ -8943,7 +8947,269 @@ types LocationWindowTypes {
 	}
 }
 
-# CM: vanilla 1.4.4 copies used by location_card above; CMF's fallback copies predate 1.4.3
+# CM: vanilla copies used by location_card above; CMF's fallback copies are vanilla 1.4.0.
+# The button bodies and location_card_town_rights_vertical are from 1.4.7, the rest from 1.4.4.
+template location_card_market_button_body {
+	block "location_card_market_size" {
+		size = { 70 28 }
+	}
+
+	datacontext = "[Location.GetMarket]"
+
+	action_tooltip = {
+		click_type = left
+		click_mode = single
+		title = "OPEN_MARKET"
+		on_action = "[ShowMarket(Market.Self)]"
+	}
+
+	block "location_card_market_right_click" {
+		action_tooltip = {
+			click_type = right
+			click_mode = confirm
+			title = "LOC_VIEW_CREATE_MARKET"
+			visible = "[Not(Location.IsMarketCenter)]"
+			enabled = "[Location.CanCreateMarket]"
+			cost = "[Location.GetCreateMarketPrice]"
+			on_action = "[CreateMarketInLocation(Location.Self)]"
+			conditions = "[Location.GetCreateMarketConditions]"
+		}
+
+		action_tooltip = {
+			click_type = right
+			click_mode = confirm
+			title = "LOC_VIEW_DESTROY_MARKET"
+			visible = "[Location.IsMarketCenter]"
+			enabled = "[Location.CanDestroyMarket]"
+			on_action = "[DestroyMarketInLocation(Location.Self)]"
+			conditions = "[Location.GetDestroyMarketConditions]"
+			description = "[Location.GetDestroyMarketPriceDesc]"
+			cost = "[Location.GetDestroyMarketPrice]"
+		}
+	}
+
+	onmousehierarchyenter = "[PdxGuiWidget.SetHighlightMarket(Market.Self)]"
+	ondoubleclick = "[PanToLocation(Market.GetCenterLocation)]"
+
+	tooltipwidget = {
+		using = location_market_tooltip
+	}
+
+	hbox = {
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			margin_right = 5
+			margin_left = 3
+			spacing = 3
+			widget = {
+				size = {28 28}
+				piechart = {
+					parentanchor = center
+					block "location_card_market_piechart_layout" {
+						size = { 25 25 }
+					}
+					alwaystransparent = yes
+					using = piechart_angles
+
+					pieslice_no_highlight = {
+						texture = "gfx/interface/pie_charts/pie_chart_alpha_80_green.dds"
+						value = "[FixedPointToFloat(Location.GetMarketAccess)]"
+						color = { 1 1 1 1 }
+						alwaystransparent = yes
+					}
+
+					pieslice_no_highlight = {
+						texture = "gfx/interface/pie_charts/pie_chart_alpha_80_red.dds"
+						value = "[Subtract_float('(float)1.0', FixedPointToFloat(Location.GetMarketAccess))]"
+						color = { 1 1 1 1 }
+						alwaystransparent = yes
+					}
+
+					icon = {
+						block "location_card_market_piechart_icon_size" {
+							size = { 61% 61% }
+						}
+						parentanchor = center
+						texture = "gfx/interface/icons/location_icons/market.dds"
+					}
+
+					using = bg_circle_piechart
+				}
+			}
+
+			block "location_card_market_text" {
+				text_single = {
+					align = left|nobaseline
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+					fontsize = 14
+					raw_text = "[Location.GetMarketAccess|0%]"
+				}
+			}
+
+			block "location_card_market_trade_icons" {}
+
+			block "location_card_market_construction" {}
+		}
+	}
+}
+
+template location_card_population_button_body {
+	block "location_card_population_size" {
+		size = { 100 28 }
+	}
+
+	block "location_card_population_click" {
+		action_tooltip = {
+			click_type = left
+			click_mode = single
+			title = "OPEN_PEOPLE_VIEW"
+			on_action = "[ShowCountryPeopleViewWithLocation(Location.GetId, '(bool)yes')]"
+		}
+	}
+
+	action_tooltip = {
+		click_type = left
+		click_mode = single
+		click_modifier = shift
+		title = "encourage_migration"
+		on_action = "[ShowSelectCabinetToEncourageMigration(Location.Self)]"
+		enabled = "[IsCabinetActionAllowed('encourage_migration')]"
+		conditions = "[GetCabinetActionTooltip('encourage_migration')]"
+	}
+
+	action_tooltip = {
+		click_type = right
+		click_mode = single
+		click_modifier = shift
+		title = "expel_people"
+		on_action = "[ShowSelectCabinetToExpelPeople(Location.GetProvince)]"
+		enabled = "[And(Or(IsCabinetActionAllowed('expel_people'), IsCabinetActionAllowed('encourage_migration')), Location.GetOwner.IsPlayer)]"
+		conditions = "[GetCabinetActionTooltip('expel_people')]"
+	}
+
+	tooltipwidget = {
+		using = population_location_tooltip
+	}
+
+	hbox = {
+		margin_left = 3
+		spacing = 5
+		widget = {
+			size = { 28 28 }
+			visible = "[HasPopBreakdownIntelOn(Location.Self)]"
+
+
+			tooltipwidget = {
+				using = AverageSatisfaction_tooltip
+			}
+			piechart = {
+				parentanchor = center
+				block "location_card_population_piechart_layout" {
+					size = { 25 25 }
+				}
+				alwaystransparent = yes
+
+				using = piechart_angles
+
+				pieslice_no_highlight = {
+					texture = "gfx/interface/pie_charts/pie_chart_alpha_80_green.dds"
+					value = "[FixedPointToFloat(Location.GetAverageSatisfaction)]"
+					color = { 1 1 1 1 }
+					alwaystransparent = yes
+				}
+
+				pieslice_no_highlight = {
+					texture = "gfx/interface/pie_charts/pie_chart_alpha_80_red.dds"
+					value = "[Subtract_float('(float)1.0', FixedPointToFloat(Location.GetAverageSatisfaction))]"
+					color = { 1 1 1 1 }
+					alwaystransparent = yes
+				}
+
+				hbox = {
+					widget = {
+						using = layoutpolicy_expanding
+						icon = {
+							block "location_card_population_piechart_icon_size" {
+								size = { 61% 61% }
+							}
+							parentanchor = center
+							name = "sad face"
+							visible = "[LessThanOrEqualTo_CFixedPoint(Location.GetAverageSatisfaction,'(CFixedPoint)0.25')]"
+							texture = "gfx/interface/icons/flat_icons/sad.dds"
+							texture_density = 2
+						}
+
+						icon = {
+							block "location_card_population_piechart_icon_size" {
+								size = { 61% 61% }
+							}
+							parentanchor = center
+							name = "neutral face"
+							visible = "[BetweenInclusiveOfMax_CFixedPoint(Location.GetAverageSatisfaction,'(CFixedPoint)0.25', '(CFixedPoint)0.5')]"
+							texture = "gfx/interface/icons/flat_icons/neutral.dds"
+							texture_density = 2
+						}
+
+						icon = {
+							block "location_card_population_piechart_icon_size" {
+								size = { 61% 61% }
+							}
+							parentanchor = center
+							name = "happy face"
+							visible = "[GreaterThan_CFixedPoint(Location.GetAverageSatisfaction,'(CFixedPoint)0.5')]"
+							texture = "gfx/interface/icons/flat_icons/happy.dds"
+							texture_density = 2
+						}
+					}
+				}
+				using = bg_circle_piechart
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			margin_right = 8
+			margin_bottom = 3
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				align = center
+				size = { -1 15 }
+				visible = "[HasPopBreakdownIntelOn(Location.Self)]"
+				raw_text = "[Location.GetTotalPopulation]@population!"
+				block "location_card_population_text_format" {}
+				fontsize = 13
+				block "location_population_sort_highlight" {}
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				align = center
+				size = { -1 15 }
+				visible = "[Not(HasPopBreakdownIntelOn(Location.Self))]"
+				tagtooltip_enabled = yes
+				text = "INTEL_FOG_LOC_POPULATION_UNKNOWN"
+				block "location_card_population_text_format" {}
+				fontsize = 13
+			}
+
+			block "location_card_population_progressbar" {
+				progressbar = {
+					layoutpolicy_horizontal = expanding
+					size = { -1 5 }
+					visible = "[HasPopBreakdownIntelOn(Location.Self)]"
+					using = progress_bar_green_alt
+					value = "[Location.GetCapacityPercentage]"
+					direction = horizontal
+				}
+			}
+		}
+	}
+}
+
 template location_card_core {
 	block "location_card_core_size" {
 		size = { 31 31 }
@@ -9079,4 +9345,44 @@ template location_card_town_rights_item_body {
 	}
 	block "location_card_town_rights_item_extra" {}
 	block "location_card_town_rights_item_hover" {}
+}
+
+template location_card_town_rights_vertical {
+	block "location_card_town_rights_size" {
+		size = { 33 33 }
+	}
+	visible = "[Or(GreaterThan_int32(GetDataModelSize(Location.GetTownRights), '(int32)0'), And(Location.GetOwner.IsPlayer, Not(Location.GetRank.IsDefault)))]"
+	block "location_card_town_rights_enabled" {
+		enabled = "[And(ShowGrantLocationTownRights(Location.Self), Not(Location.GetRank.IsDefault))]"
+	}
+
+	block "location_card_town_rights_empty_button" {
+		button_townrights = {
+			using = location_card_town_rights_empty_body
+		}
+	}
+
+	block "location_card_town_rights_empty_extra" {}
+
+	# ONE TOWN RIGHT SELECTED
+	hbox = {
+		block "location_card_town_rights_single_visible" {
+			visible = "[EqualTo_int32(GetDataModelSize(Location.GetTownRights), '(int32)1')]"
+		}
+		datamodel = "[Location.GetTownRights]"
+		item = {
+			widget = {
+				using = layoutpolicy_expanding
+				block "location_card_town_rights_item_visible" {}
+
+				block "location_card_town_rights_item_button" {
+					button_townrights = {
+						size = { 100% 100% }
+						using = location_card_town_rights_item_body
+					}
+				}
+			}
+		}
+	}
+	block "location_town_rights_sort_highlight" {}
 }
