@@ -1,0 +1,107 @@
+﻿# vanilla: in_game/gui/location_window.gui
+# mod: in_game/gui/location_window.gui
+
+template location_card_market_button_body {
+	block "location_card_market_size" {
+		size = { 70 28 }
+	}
+
+	datacontext = "[Location.GetMarket]"
+
+	action_tooltip = {
+		click_type = left
+		click_mode = single
+		title = "OPEN_MARKET"
+		on_action = "[ShowMarket(Market.Self)]"
+	}
+
+	block "location_card_market_right_click" {
+		action_tooltip = {
+			click_type = right
+			click_mode = confirm
+			title = "LOC_VIEW_CREATE_MARKET"
+			visible = "[Not(Location.IsMarketCenter)]"
+			enabled = "[Location.CanCreateMarket]"
+			cost = "[Location.GetCreateMarketPrice]"
+			on_action = "[CreateMarketInLocation(Location.Self)]"
+			conditions = "[Location.GetCreateMarketConditions]"
+		}
+
+		action_tooltip = {
+			click_type = right
+			click_mode = confirm
+			title = "LOC_VIEW_DESTROY_MARKET"
+			visible = "[Location.IsMarketCenter]"
+			enabled = "[Location.CanDestroyMarket]"
+			on_action = "[DestroyMarketInLocation(Location.Self)]"
+			conditions = "[Location.GetDestroyMarketConditions]"
+			description = "[Location.GetDestroyMarketPriceDesc]"
+			cost = "[Location.GetDestroyMarketPrice]"
+		}
+	}
+
+	onmousehierarchyenter = "[PdxGuiWidget.SetHighlightMarket(Market.Self)]"
+	ondoubleclick = "[PanToLocation(Market.GetCenterLocation)]"
+
+	tooltipwidget = {
+		using = location_market_tooltip
+	}
+
+	hbox = {
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			margin_right = 5
+			margin_left = 3
+			spacing = 3
+			widget = {
+				size = {28 28}
+				piechart = {
+					parentanchor = center
+					block "location_card_market_piechart_layout" {
+						size = { 25 25 }
+					}
+					alwaystransparent = yes
+					using = piechart_angles
+
+					pieslice_no_highlight = {
+						texture = "gfx/interface/pie_charts/pie_chart_alpha_80_green.dds"
+						value = "[FixedPointToFloat(Location.GetMarketAccess)]"
+						color = { 1 1 1 1 }
+						alwaystransparent = yes
+					}
+
+					pieslice_no_highlight = {
+						texture = "gfx/interface/pie_charts/pie_chart_alpha_80_red.dds"
+						value = "[Subtract_float('(float)1.0', FixedPointToFloat(Location.GetMarketAccess))]"
+						color = { 1 1 1 1 }
+						alwaystransparent = yes
+					}
+
+					icon = {
+						block "location_card_market_piechart_icon_size" {
+							size = { 61% 61% }
+						}
+						parentanchor = center
+						texture = "gfx/interface/icons/location_icons/market.dds"
+					}
+
+					using = bg_circle_piechart
+				}
+			}
+
+			block "location_card_market_text" {
+				text_single = {
+					align = left|nobaseline
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+					fontsize = 14
+					raw_text = "[Location.GetMarketAccess|0%]"
+				}
+			}
+
+			block "location_card_market_trade_icons" {}
+
+			block "location_card_market_construction" {}
+		}
+	}
+}

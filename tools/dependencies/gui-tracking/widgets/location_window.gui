@@ -602,6 +602,12 @@ lateralview = {
 
 							blockoverride "location_card_town_rights_slot" {}
 
+							blockoverride "location_card_town_rights_vertical_slot" {
+								widget = {
+									using = location_card_town_rights_vertical
+								}
+							}
+
 							blockoverride "location_card_core_icon_size" {
 								size = { 28 28 }
 							}

@@ -1,0 +1,158 @@
+﻿# vanilla: in_game/gui/location_window.gui
+# mod: in_game/gui/location_window.gui
+
+template location_card_population_button_body {
+	block "location_card_population_size" {
+		size = { 100 28 }
+	}
+
+	block "location_card_population_click" {
+		action_tooltip = {
+			click_type = left
+			click_mode = single
+			title = "OPEN_PEOPLE_VIEW"
+			on_action = "[ShowCountryPeopleViewWithLocation(Location.GetId, '(bool)yes')]"
+		}
+	}
+
+	action_tooltip = {
+		click_type = left
+		click_mode = single
+		click_modifier = shift
+		title = "encourage_migration"
+		on_action = "[ShowSelectCabinetToEncourageMigration(Location.Self)]"
+		enabled = "[IsCabinetActionAllowed('encourage_migration')]"
+		conditions = "[GetCabinetActionTooltip('encourage_migration')]"
+	}
+
+	action_tooltip = {
+		click_type = right
+		click_mode = single
+		click_modifier = shift
+		title = "expel_people"
+		on_action = "[ShowSelectCabinetToExpelPeople(Location.GetProvince)]"
+		enabled = "[And(Or(IsCabinetActionAllowed('expel_people'), IsCabinetActionAllowed('encourage_migration')), Location.GetOwner.IsPlayer)]"
+		conditions = "[GetCabinetActionTooltip('expel_people')]"
+	}
+
+	tooltipwidget = {
+		using = population_location_tooltip
+	}
+
+	hbox = {
+		margin_left = 3
+		spacing = 5
+		widget = {
+			size = { 28 28 }
+			visible = "[HasPopBreakdownIntelOn(Location.Self)]"
+
+
+			tooltipwidget = {
+				using = AverageSatisfaction_tooltip
+			}
+			piechart = {
+				parentanchor = center
+				block "location_card_population_piechart_layout" {
+					size = { 25 25 }
+				}
+				alwaystransparent = yes
+
+				using = piechart_angles
+
+				pieslice_no_highlight = {
+					texture = "gfx/interface/pie_charts/pie_chart_alpha_80_green.dds"
+					value = "[FixedPointToFloat(Location.GetAverageSatisfaction)]"
+					color = { 1 1 1 1 }
+					alwaystransparent = yes
+				}
+
+				pieslice_no_highlight = {
+					texture = "gfx/interface/pie_charts/pie_chart_alpha_80_red.dds"
+					value = "[Subtract_float('(float)1.0', FixedPointToFloat(Location.GetAverageSatisfaction))]"
+					color = { 1 1 1 1 }
+					alwaystransparent = yes
+				}
+
+				hbox = {
+					widget = {
+						using = layoutpolicy_expanding
+						icon = {
+							block "location_card_population_piechart_icon_size" {
+								size = { 61% 61% }
+							}
+							parentanchor = center
+							name = "sad face"
+							visible = "[LessThanOrEqualTo_CFixedPoint(Location.GetAverageSatisfaction,'(CFixedPoint)0.25')]"
+							texture = "gfx/interface/icons/flat_icons/sad.dds"
+							texture_density = 2
+						}
+
+						icon = {
+							block "location_card_population_piechart_icon_size" {
+								size = { 61% 61% }
+							}
+							parentanchor = center
+							name = "neutral face"
+							visible = "[BetweenInclusiveOfMax_CFixedPoint(Location.GetAverageSatisfaction,'(CFixedPoint)0.25', '(CFixedPoint)0.5')]"
+							texture = "gfx/interface/icons/flat_icons/neutral.dds"
+							texture_density = 2
+						}
+
+						icon = {
+							block "location_card_population_piechart_icon_size" {
+								size = { 61% 61% }
+							}
+							parentanchor = center
+							name = "happy face"
+							visible = "[GreaterThan_CFixedPoint(Location.GetAverageSatisfaction,'(CFixedPoint)0.5')]"
+							texture = "gfx/interface/icons/flat_icons/happy.dds"
+							texture_density = 2
+						}
+					}
+				}
+				using = bg_circle_piechart
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			margin_right = 8
+			margin_bottom = 3
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				align = center
+				size = { -1 15 }
+				visible = "[HasPopBreakdownIntelOn(Location.Self)]"
+				raw_text = "[Location.GetTotalPopulation]@population!"
+				block "location_card_population_text_format" {}
+				fontsize = 13
+				block "location_population_sort_highlight" {}
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				align = center
+				size = { -1 15 }
+				visible = "[Not(HasPopBreakdownIntelOn(Location.Self))]"
+				tagtooltip_enabled = yes
+				text = "INTEL_FOG_LOC_POPULATION_UNKNOWN"
+				block "location_card_population_text_format" {}
+				fontsize = 13
+			}
+
+			block "location_card_population_progressbar" {
+				progressbar = {
+					layoutpolicy_horizontal = expanding
+					size = { -1 5 }
+					visible = "[HasPopBreakdownIntelOn(Location.Self)]"
+					using = progress_bar_green_alt
+					value = "[Location.GetCapacityPercentage]"
+					direction = horizontal
+				}
+			}
+		}
+	}
+}

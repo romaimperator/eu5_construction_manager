@@ -28,11 +28,32 @@
       "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_core_integrated.gui",
       "vanilla_file": "in_game/gui/location_window.gui"
     },
+    "template:location_card_market_button_body": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/location_window.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_market_button_body.gui",
+      "vanilla_file": "in_game/gui/location_window.gui"
+    },
+    "template:location_card_population_button_body": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/location_window.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_population_button_body.gui",
+      "vanilla_file": "in_game/gui/location_window.gui"
+    },
     "template:location_card_town_rights_item_body": {
       "base_widget": null,
       "mod_file": "in_game/gui/location_window.gui",
       "namespace": null,
       "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_town_rights_item_body.gui",
+      "vanilla_file": "in_game/gui/location_window.gui"
+    },
+    "template:location_card_town_rights_vertical": {
+      "base_widget": null,
+      "mod_file": "in_game/gui/location_window.gui",
+      "namespace": null,
+      "tracking_path": "tools/dependencies/gui-tracking/templates/location_card_town_rights_vertical.gui",
       "vanilla_file": "in_game/gui/location_window.gui"
     },
     "template:location_town_rights_icon_strip": {

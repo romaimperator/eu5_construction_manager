@@ -80,10 +80,8 @@
 						}
 					}
 				}
-
-				widget = {
-					using = location_card_town_rights
-				}
+	
+				block "location_card_town_rights_vertical_slot" {}
 			}
 
 			vbox = {
@@ -375,7 +373,7 @@
 							# layoutpolicy_horizontal = expanding
 							# size = { -1 28 }
 
-							size = { 90 28 }
+							size = { 70 28 }
 
 							action_tooltip = {
 								click_type = left
