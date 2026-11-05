@@ -1,10 +1,13 @@
 {
   "file_languages": {
     "english/cm_cmm_l_english.yml": {
+      "braz_por": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
+      "french": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
       "polish": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
       "russian": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
       "simp_chinese": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
-      "spanish": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea"
+      "spanish": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea",
+      "turkish": "b1edf1c41908e1bfa700ffd340c0661f9760c6121bd0b7d7bac6bebb42e73dea"
     },
     "english/cm_filters_l_english.yml": {
       "braz_por": "8fe1d0bae50615462da403a0cdb94608180f7b847baaccfa8a315494dc1cb3bb",
